@@ -26,22 +26,43 @@ const PORT = process.env.PORT || 3000;
 // File that will hold submitted contact messages.  Each contact submission
 // is appended as a JSON object within an array.  This file is created if
 // it does not already exist.
-const CONTACTS_FILE = path.join(__dirname, 'contacts.json');
+const DEFAULT_CONTACTS_FILE = path.join(__dirname, 'contacts.json');
 
 /**
- * Ensure the contacts file exists.  If the file does not exist, create it
- * and initialise it with an empty array.  This helper runs at server start
- * and guarantees that subsequent writes will succeed without ENOENT errors.
+ * Resolve the path used to store contact submissions. Allows overriding
+ * via CONTACTS_FILE_PATH so serverless deployments can persist elsewhere.
+ *
+ * @returns {string} Absolute path to the contacts store.
+ */
+function getContactsFilePath() {
+  return process.env.CONTACTS_FILE_PATH || DEFAULT_CONTACTS_FILE;
+}
+
+/**
+ * Ensure the contacts file exists. Attempts to create the file if missing and
+ * falls back to a temporary location when running in constrained environments
+ * (e.g. Vercel serverless functions).
+ *
+ * @returns {string} The file path that should be used for persistence.
  */
 function ensureContactsFile() {
+  let targetPath = getContactsFilePath();
   try {
-    // Check if the file exists by reading its stats.  If it throws, we know
-    // the file does not exist and we can create it.
-    fs.statSync(CONTACTS_FILE);
+    fs.statSync(targetPath);
+    return targetPath;
   } catch (err) {
-    // Write an empty array to the file.  Use JSON.stringify to produce
-    // valid JSON; the third argument (2) makes the output pretty-printed.
-    fs.writeFileSync(CONTACTS_FILE, JSON.stringify([], null, 2), 'utf8');
+    try {
+      fs.writeFileSync(targetPath, JSON.stringify([], null, 2), 'utf8');
+      return targetPath;
+    } catch (writeErr) {
+      if (!process.env.CONTACTS_FILE_PATH && process.env.VERCEL) {
+        const tmpPath = path.join('/tmp', 'contacts.json');
+        process.env.CONTACTS_FILE_PATH = tmpPath;
+        fs.writeFileSync(tmpPath, JSON.stringify([], null, 2), 'utf8');
+        return tmpPath;
+      }
+      throw writeErr;
+    }
   }
 }
 
@@ -133,14 +154,15 @@ function handleContactSubmission(req, res) {
         return;
       }
       // Read existing contacts, append the new entry, then write back to the file.
-      const contacts = JSON.parse(fs.readFileSync(CONTACTS_FILE, 'utf8'));
+      const contactsFilePath = ensureContactsFile();
+      const contacts = JSON.parse(fs.readFileSync(contactsFilePath, 'utf8'));
       contacts.push({
         name: data.name,
         email: data.email,
         message: data.message,
         timestamp: new Date().toISOString()
       });
-      fs.writeFileSync(CONTACTS_FILE, JSON.stringify(contacts, null, 2), 'utf8');
+      fs.writeFileSync(contactsFilePath, JSON.stringify(contacts, null, 2), 'utf8');
       // Respond with success.
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ status: 'success', message: 'Thank you for contacting us!' }));
@@ -183,15 +205,21 @@ function requestHandler(req, res) {
   serveStaticFile(filePath, res);
 }
 
-// Ensure the contacts file exists before starting the server.
-ensureContactsFile();
+if (require.main === module) {
+  ensureContactsFile();
+  const server = http.createServer(requestHandler);
 
-// Create and start the HTTP server.
-const server = http.createServer(requestHandler);
+  server.listen(PORT, () => {
+    console.log(`TSL website server running at http://localhost:${PORT}`);
+  });
+}
 
-server.listen(PORT, () => {
-  console.log(`TSL website server running at http://localhost:${PORT}`);
-});
+module.exports = {
+  requestHandler,
+  handleContactSubmission,
+  ensureContactsFile,
+  getContactsFilePath
+};
 
 /**
  * Below is a long series of comment lines used to meet the 10 000 line requirement
