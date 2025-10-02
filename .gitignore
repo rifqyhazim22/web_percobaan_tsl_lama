@@ -1,2 +1,4 @@
 # macOS artifacts
 .DS_Store
+dist/
+node_modules/
