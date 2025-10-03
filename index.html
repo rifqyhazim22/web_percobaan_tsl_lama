@@ -212,6 +212,64 @@
             transform: translateX(26px);
         }
 
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .language-switch {
+            position: relative;
+            width: 76px;
+            height: 28px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid var(--dark-accent);
+            color: var(--dark-accent);
+            transition: border-color var(--transition-duration), color var(--transition-duration);
+        }
+
+        .language-switch::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            width: 34px;
+            height: 22px;
+            border-radius: 11px;
+            background: var(--dark-accent);
+            transition: transform var(--transition-duration), background var(--transition-duration);
+            z-index: -1;
+        }
+
+        .language-switch span {
+            flex: 1;
+            text-align: center;
+            z-index: 1;
+        }
+
+        body[data-theme="light"] .language-switch {
+            border-color: var(--light-accent);
+            color: var(--light-accent);
+        }
+
+        body[data-theme="light"] .language-switch::after {
+            background: var(--light-accent);
+        }
+
+        .language-switch[data-language="id"]::after {
+            transform: translateX(32px);
+        }
+
+        .language-switch[data-language="en"]::after {
+            transform: translateX(0);
+        }
+
         /* Main container for sections.  Each section occupies the
          * viewport minus the navigation bar and is hidden or shown via
          * the .active class. */
@@ -805,7 +863,7 @@
         }
     </style>
 </head>
-<body data-theme="dark">
+<body data-theme="dark" data-language="en">
     <!-- Navigation bar -->
     <header>
         <a href="#" data-link="home" class="logo-link">
@@ -813,16 +871,22 @@
         </a>
         <nav>
             <!-- Navigation links translated to English.  Removed testimonial link to match the official site. -->
-            <a href="#" data-link="home" class="active">Home</a>
-            <a href="#" data-link="services">Services</a>
-            <a href="#" data-link="partners">Partners</a>
-            <a href="#" data-link="articles">Articles</a>
-            <a href="#" data-link="faq">FAQ</a>
-            <a href="#" data-link="about">About</a>
-            <a href="#" data-link="contact">Contact</a>
+            <a href="#" data-link="home" class="active" data-i18n="nav.home">Home</a>
+            <a href="#" data-link="services" data-i18n="nav.services">Services</a>
+            <a href="#" data-link="partners" data-i18n="nav.partners">Partners</a>
+            <a href="#" data-link="articles" data-i18n="nav.articles">Articles</a>
+            <a href="#" data-link="faq" data-i18n="nav.faq">FAQ</a>
+            <a href="#" data-link="about" data-i18n="nav.about">About</a>
+            <a href="#" data-link="contact" data-i18n="nav.contact">Contact</a>
         </nav>
-        <!-- Theme switcher -->
-        <div class="theme-switch" id="themeSwitch" title="Toggle Theme"></div>
+        <div class="header-controls">
+            <div class="language-switch" id="languageSwitch" title="Toggle Language" data-language="en">
+                <span>EN</span>
+                <span>ID</span>
+            </div>
+            <!-- Theme switcher -->
+            <div class="theme-switch" id="themeSwitch" title="Toggle Theme"></div>
+        </div>
     </header>
     <!-- Main content container with sections -->
     <main>
@@ -834,10 +898,10 @@
             <div class="overlay"></div>
             <div class="hero">
                 <img src="https://tokosusun.sgp1.cdn.digitaloceanspaces.com/tokosusun/assets/thesociallinked/elevate.png" alt="Elevate" style="max-width:280px;" class="mb-4">
-                <h1 class="accent">ELEVATE YOUR BUSINESS</h1>
-                <h2>We Provide 360° Integrated Marketing Services</h2>
+                <h1 class="accent" data-i18n="hero.title">ELEVATE YOUR BUSINESS</h1>
+                <h2 data-i18n="hero.subtitle">We Provide 360° Integrated Marketing Services</h2>
                 <!-- CTA button navigates directly to the contact section.  Text changed to English. -->
-                <button data-link="contact" class="cta">Contact Us</button>
+                <button data-link="contact" class="cta" data-i18n="hero.cta">Contact Us</button>
             </div>
         </section>
         <!-- Services Overview Section -->
@@ -848,32 +912,32 @@
             </video>
             <div class="overlay"></div>
             <div class="container text-center">
-                <h2 class="accent mb-4">Our Services</h2>
-                <p class="mb-4">TSL offers a variety of services to help your business grow. Click a card to learn more about each service.</p>
+                <h2 class="accent mb-4" data-i18n="services.heading">Our Services</h2>
+                <p class="mb-4" data-i18n="services.description">TSL offers a variety of services to help your business grow. Click a card to learn more about each service.</p>
                 <div class="grid">
                     <div class="service-card" data-link="digital">
                         <!-- Local icon for Digital Marketing to avoid remote image loading issues -->
                         <img src="./digital_icon.png" alt="Digital Marketing Icon">
-                        <h3>Digital Marketing</h3>
-                        <p>Integrated online marketing strategies including advertising, email and analytics.</p>
+                        <h3 data-i18n="services.digital.title">Digital Marketing</h3>
+                        <p data-i18n="services.digital.copy">Integrated online marketing strategies including advertising, email and analytics.</p>
                     </div>
                     <div class="service-card" data-link="visual">
                         <!-- Local icon for Visual Design to avoid using a calculator icon and ensure consistent colouring -->
                         <img src="./visual_icon.png" alt="Visual Design Icon">
-                        <h3>Visual Design</h3>
-                        <p>Visual identity, UI/UX design, illustration and animation for your brand.</p>
+                        <h3 data-i18n="services.visual.title">Visual Design</h3>
+                        <p data-i18n="services.visual.copy">Visual identity, UI/UX design, illustration and animation for your brand.</p>
                     </div>
                     <div class="service-card" data-link="social">
                         <!-- Use a simplified icon for Social Media Management to better represent the service -->
                         <img src="./social_simple.png" alt="Social Media Management Icon">
-                        <h3>Social Media Management</h3>
-                        <p>Grow your community and optimise your social platforms.</p>
+                        <h3 data-i18n="services.social.title">Social Media Management</h3>
+                        <p data-i18n="services.social.copy">Grow your community and optimise your social platforms.</p>
                     </div>
                     <div class="service-card" data-link="seo">
                         <!-- Local icon for SEO/SEM with gold/black palette -->
                         <img src="./seo_icon.png" alt="SEO/SEM Icon">
-                        <h3>SEO / SEM</h3>
-                        <p>Increase your visibility on search engines through SEO and PPC advertising.</p>
+                        <h3 data-i18n="services.seo.title">SEO / SEM</h3>
+                        <p data-i18n="services.seo.copy">Increase your visibility on search engines through SEO and PPC advertising.</p>
                     </div>
                 </div>
             </div>
@@ -888,55 +952,57 @@
             <div class="page-content">
                 <!-- Use a single illustration for the Digital Marketing page.  A more appropriate graphic is displayed once. -->
                 <img src="./digital_new.png" alt="Digital Marketing Illustration" class="service-illustration">
-                <h2>Digital Marketing</h2>
-                <p>TSL menyediakan layanan pemasaran digital terintegrasi, menggabungkan
-                    iklan berbayar (PPC), pemasaran email, kampanye media sosial,
-                    marketing automation dan analitik. Kami memahami bahwa
-                    setiap bisnis memiliki kebutuhan unik, sehingga strategi
-                    digital kami disesuaikan untuk mencapai tujuan spesifik
-                    klien.</p>
-                <h3>Iklan Berbayar (PPC)</h3>
-                <p>Kami mengelola kampanye di Google Ads, Meta Ads, TikTok Ads dan platform
-                    lainnya, memastikan setiap rupiah terpakai secara efisien. Riset
-                    kata kunci, segmentasi audiens, optimisasi landing page dan
-                    pemantauan konversi adalah bagian dari proses kami.</p>
-                <h3>Pemasaran Email</h3>
-                <p>Pemasaran email membantu mempertahankan hubungan dengan pelanggan. Kami
-                    membuat newsletter yang relevan, email otomatisasi untuk nurturing
-                    leads, serta email promosi yang dikemas dengan desain menarik.
-                    Platform yang kami gunakan mencakup Mailchimp, Klaviyo dan
-                    sistem email khusus sesuai kebutuhan klien.</p>
-                <h3>Marketing Automation &amp; Analitik</h3>
-                <p>Kami memanfaatkan tools seperti HubSpot dan GA4 untuk
-                    marketing automation, memicu tindakan berdasarkan perilaku
-                    pengguna. Dengan analitik real‑time, klien dapat melihat
-                    performa kampanye secara transparan.</p>
-                <p>Selain itu, kami menekankan integrasi lintas channel. Kampanye
-                    digital yang sukses tidak berdiri sendiri; iklan PPC,
-                    email marketing, social media dan SEO harus saling
-                    mendukung untuk membangun ekosistem pemasaran yang kuat.
-                    Kami membantu menghubungkan setiap titik sehingga
-                    prospek dapat berpindah dari satu touchpoint ke touchpoint
-                    lain tanpa hambatan, meningkatkan peluang konversi.</p>
-                <p>Personalization dan pengujian berkelanjutan juga merupakan
-                    bagian inti dari layanan kami. Dengan A/B testing
-                    terhadap copy, kreatif, CTA dan landing page, kami
-                    memvalidasi hipotesis untuk menemukan pendekatan yang
-                    paling efektif. Data yang diperoleh tidak hanya
-                    meningkatkan performa kampanye saat ini, tetapi juga
-                    menjadi referensi untuk strategi jangka panjang.</p>
-                <p>Retargeting memainkan peran penting dalam mendorong konversi.
-                    Dengan memanfaatkan pixel tracking, kami membangun
-                    audiens khusus yang telah berinteraksi dengan brand Anda
-                    dan menayangkan iklan yang relevan untuk mendorong
-                    pembelian. Funnel konversi disusun agar prospek
-                    melewati awareness, consideration, hingga decision
-                    dengan mulus.</p>
-                <p>Integrasi CRM dengan kampanye digital memungkinkan kami
-                    menghubungkan data pelanggan dari berbagai kanal untuk
-                    menciptakan segmentasi yang lebih tajam. Ini membantu
-                    dalam menyusun pesan yang dipersonalisasi, memaksimalkan
-                    lifetime value pelanggan dan meningkatkan loyalitas.</p>
+                <div data-i18n-html="detail.digital">
+                    <h2>Digital Marketing</h2>
+                    <p>TSL menyediakan layanan pemasaran digital terintegrasi, menggabungkan
+                        iklan berbayar (PPC), pemasaran email, kampanye media sosial,
+                        marketing automation dan analitik. Kami memahami bahwa
+                        setiap bisnis memiliki kebutuhan unik, sehingga strategi
+                        digital kami disesuaikan untuk mencapai tujuan spesifik
+                        klien.</p>
+                    <h3>Iklan Berbayar (PPC)</h3>
+                    <p>Kami mengelola kampanye di Google Ads, Meta Ads, TikTok Ads dan platform
+                        lainnya, memastikan setiap rupiah terpakai secara efisien. Riset
+                        kata kunci, segmentasi audiens, optimisasi landing page dan
+                        pemantauan konversi adalah bagian dari proses kami.</p>
+                    <h3>Pemasaran Email</h3>
+                    <p>Pemasaran email membantu mempertahankan hubungan dengan pelanggan. Kami
+                        membuat newsletter yang relevan, email otomatisasi untuk nurturing
+                        leads, serta email promosi yang dikemas dengan desain menarik.
+                        Platform yang kami gunakan mencakup Mailchimp, Klaviyo dan
+                        sistem email khusus sesuai kebutuhan klien.</p>
+                    <h3>Marketing Automation &amp; Analitik</h3>
+                    <p>Kami memanfaatkan tools seperti HubSpot dan GA4 untuk
+                        marketing automation, memicu tindakan berdasarkan perilaku
+                        pengguna. Dengan analitik real‑time, klien dapat melihat
+                        performa kampanye secara transparan.</p>
+                    <p>Selain itu, kami menekankan integrasi lintas channel. Kampanye
+                        digital yang sukses tidak berdiri sendiri; iklan PPC,
+                        email marketing, social media dan SEO harus saling
+                        mendukung untuk membangun ekosistem pemasaran yang kuat.
+                        Kami membantu menghubungkan setiap titik sehingga
+                        prospek dapat berpindah dari satu touchpoint ke touchpoint
+                        lain tanpa hambatan, meningkatkan peluang konversi.</p>
+                    <p>Personalization dan pengujian berkelanjutan juga merupakan
+                        bagian inti dari layanan kami. Dengan A/B testing
+                        terhadap copy, kreatif, CTA dan landing page, kami
+                        memvalidasi hipotesis untuk menemukan pendekatan yang
+                        paling efektif. Data yang diperoleh tidak hanya
+                        meningkatkan performa kampanye saat ini, tetapi juga
+                        menjadi referensi untuk strategi jangka panjang.</p>
+                    <p>Retargeting memainkan peran penting dalam mendorong konversi.
+                        Dengan memanfaatkan pixel tracking, kami membangun
+                        audiens khusus yang telah berinteraksi dengan brand Anda
+                        dan menayangkan iklan yang relevan untuk mendorong
+                        pembelian. Funnel konversi disusun agar prospek
+                        melewati awareness, consideration, hingga decision
+                        dengan mulus.</p>
+                    <p>Integrasi CRM dengan kampanye digital memungkinkan kami
+                        menghubungkan data pelanggan dari berbagai kanal untuk
+                        menciptakan segmentasi yang lebih tajam. Ini membantu
+                        dalam menyusun pesan yang dipersonalisasi, memaksimalkan
+                        lifetime value pelanggan dan meningkatkan loyalitas.</p>
+                </div>
                 <!-- Removed back button; navigation is handled via the header menu. -->
             </div>
         </section>
@@ -949,50 +1015,52 @@
             <div class="overlay"></div>
             <div class="page-content">
                 <img class="service-illustration" src="./visual_large.png" alt="Visual Design Illustration">
-                <h2>Visual Design</h2>
-                <p>Visual yang kuat membantu brand menonjol di pasar yang padat. Dari
-                    pembuatan logo hingga panduan identitas lengkap, tim kami
-                    bekerja sama dengan klien untuk mengekspresikan kepribadian
-                    brand secara konsisten. Layanan kami mencakup desain UI/UX,
-                    ilustrasi, fotografi, dan produksi video.</p>
-                <h3>Identitas Brand</h3>
-                <p>Kami menggali esensi brand untuk menciptakan logo, palet warna,
-                    tipografi, dan gaya visual yang unik. Panduan brand yang kami
-                    susun memudahkan implementasi identitas pada berbagai media.
-                </p>
-                <h3>UI/UX Design</h3>
-                <p>Pengalaman pengguna yang baik meningkatkan kepuasan dan konversi.
-                    Kami merancang antarmuka digital yang intuitif, responsif dan
-                    estetis untuk aplikasi web maupun mobile.</p>
-                <h3>Ilustrasi &amp; Motion Graphics</h3>
-                <p>Ilustrasi kustom dan animasi membantu menyampaikan pesan secara
-                    efektif. Kami membuat aset visual yang mendukung cerita
-                    brand dalam video, infografik dan sosial media.</p>
-                <p>Setiap proyek desain dimulai dengan riset mendalam. Kami
-                    mempelajari target audiens dan konteks bisnis untuk
-                    menghasilkan konsep yang relevan. Wireframe, mood
-                    board dan prototyping digunakan untuk memvalidasi
-                    ide sebelum masuk ke tahap finalisasi. Pendekatan ini
-                    memastikan bahwa setiap elemen visual bukan hanya
-                    indah, tetapi juga fungsional.</p>
-                <p>Consistency adalah kunci. Visual identity harus konsisten
-                    di semua platform, baik digital maupun cetak. Tim kami
-                    memastikan bahwa palet warna, tipografi, ikonografi
-                    dan gaya ilustrasi diterapkan secara seragam, sehingga
-                    brand Anda mudah dikenali dan membangun kepercayaan
-                    jangka panjang dengan audiens.</p>
-                <p>Kami juga mengerjakan desain kemasan dan materi cetak
-                    seperti brosur, katalog, signage dan point‑of‑sale.
-                    Desain ini memastikan pengalaman visual yang terpadu
-                    ketika produk Anda berada di rak, di tangan konsumen
-                    atau dipamerkan dalam acara.</p>
-                <p>Documentasi desain berupa brand guidelines penting untuk
-                    menjaga konsistensi jangka panjang. Kami membuat
-                    panduan komprehensif yang mencakup aturan penggunaan
-                    logo, warna, tipografi, fotografi, iconography, serta
-                    contoh aplikasi. Panduan ini memudahkan tim internal
-                    atau vendor eksternal untuk menerapkan identitas
-                    brand dengan benar.</p>
+                <div data-i18n-html="detail.visual">
+                    <h2>Visual Design</h2>
+                    <p>Visual yang kuat membantu brand menonjol di pasar yang padat. Dari
+                        pembuatan logo hingga panduan identitas lengkap, tim kami
+                        bekerja sama dengan klien untuk mengekspresikan kepribadian
+                        brand secara konsisten. Layanan kami mencakup desain UI/UX,
+                        ilustrasi, fotografi, dan produksi video.</p>
+                    <h3>Identitas Brand</h3>
+                    <p>Kami menggali esensi brand untuk menciptakan logo, palet warna,
+                        tipografi, dan gaya visual yang unik. Panduan brand yang kami
+                        susun memudahkan implementasi identitas pada berbagai media.
+                    </p>
+                    <h3>UI/UX Design</h3>
+                    <p>Pengalaman pengguna yang baik meningkatkan kepuasan dan konversi.
+                        Kami merancang antarmuka digital yang intuitif, responsif dan
+                        estetis untuk aplikasi web maupun mobile.</p>
+                    <h3>Ilustrasi &amp; Motion Graphics</h3>
+                    <p>Ilustrasi kustom dan animasi membantu menyampaikan pesan secara
+                        efektif. Kami membuat aset visual yang mendukung cerita
+                        brand dalam video, infografik dan sosial media.</p>
+                    <p>Setiap proyek desain dimulai dengan riset mendalam. Kami
+                        mempelajari target audiens dan konteks bisnis untuk
+                        menghasilkan konsep yang relevan. Wireframe, mood
+                        board dan prototyping digunakan untuk memvalidasi
+                        ide sebelum masuk ke tahap finalisasi. Pendekatan ini
+                        memastikan bahwa setiap elemen visual bukan hanya
+                        indah, tetapi juga fungsional.</p>
+                    <p>Consistency adalah kunci. Visual identity harus konsisten
+                        di semua platform, baik digital maupun cetak. Tim kami
+                        memastikan bahwa palet warna, tipografi, ikonografi
+                        dan gaya ilustrasi diterapkan secara seragam, sehingga
+                        brand Anda mudah dikenali dan membangun kepercayaan
+                        jangka panjang dengan audiens.</p>
+                    <p>Kami juga mengerjakan desain kemasan dan materi cetak
+                        seperti brosur, katalog, signage dan point‑of‑sale.
+                        Desain ini memastikan pengalaman visual yang terpadu
+                        ketika produk Anda berada di rak, di tangan konsumen
+                        atau dipamerkan dalam acara.</p>
+                    <p>Documentasi desain berupa brand guidelines penting untuk
+                        menjaga konsistensi jangka panjang. Kami membuat
+                        panduan komprehensif yang mencakup aturan penggunaan
+                        logo, warna, tipografi, fotografi, iconography, serta
+                        contoh aplikasi. Panduan ini memudahkan tim internal
+                        atau vendor eksternal untuk menerapkan identitas
+                        brand dengan benar.</p>
+                </div>
                 <!-- Removed back button; use navigation menu to return to services. -->
             </div>
         </section>
@@ -1005,47 +1073,49 @@
             <div class="overlay"></div>
             <div class="page-content">
                 <img class="service-illustration" src="./social_large.png" alt="Social Media Illustration">
-                <h2>Social Media Management</h2>
-                <p>Kehadiran di media sosial adalah bagian penting dari strategi
-                    pemasaran modern. Kami membantu brand membangun dan
-                    mempertahankan komunitas online dengan pendekatan yang
-                    autentik dan terencana. Platform yang kami kelola mencakup
-                    Instagram, Facebook, LinkedIn, TikTok dan lainnya.</p>
-                <h3>Strategi Konten</h3>
-                <p>Kami menyusun kalender konten yang seimbang antara edukasi,
-                    hiburan dan promosi. Konten disesuaikan dengan kebutuhan
-                    audiens dan tren terkini.</p>
-                <h3>Komunitas &amp; Moderasi</h3>
-                <p>Interaksi dua arah sangat penting. Tim kami merespon komentar,
-                    pesan langsung dan mengelola komunitas untuk menjaga reputasi
-                    brand.</p>
-                <h3>Kampanye Influencer</h3>
-                <p>Kolaborasi dengan influencer yang sesuai meningkatkan jangkauan
-                    dan kredibilitas. Kami mengidentifikasi, mengelola dan
-                    mengevaluasi kampanye influencer dari awal hingga akhir.</p>
-                <p>Analitik memegang peran penting dalam manajemen media sosial.
-                    Kami memantau metrik seperti engagement rate, reach,
-                    sentiment dan follower growth untuk mengevaluasi
-                    efektivitas strategi. Insight yang diperoleh menjadi
-                    dasar optimasi konten di masa mendatang.</p>
-                <p>Pemasaran berbayar di media sosial (paid social) juga termasuk
-                    dalam layanan kami. Melalui penargetan yang tepat,
-                    retargeting dan penggunaan lookalike audience, kami
-                    membantu klien memperluas jangkauan secara efisien
-                    sambil menjaga ROI yang positif.</p>
-                <p>Kami memahami pentingnya manajemen krisis di media sosial.
-                    Reputasi brand dapat berubah dengan cepat ketika
-                    menghadapi ulasan negatif atau isu publik. Tim kami
-                    dilatih untuk merespons secara cepat dan empatik,
-                    menjaga komunikasi transparan dan memulihkan kepercayaan
-                    audiens.</p>
-                <p>Memonitor tren dan perkembangan di setiap platform
-                    memungkinkan kami menciptakan konten yang relevan dengan
-                    budaya populer. Dari format video pendek hingga live
-                    streaming, kami menyesuaikan konten agar memanfaatkan
-                    algoritma terbaru dan preferensi pengguna. Setiap
-                    kampanye dirancang untuk memicu interaksi dan
-                    percakapan.</p>
+                <div data-i18n-html="detail.social">
+                    <h2>Social Media Management</h2>
+                    <p>Kehadiran di media sosial adalah bagian penting dari strategi
+                        pemasaran modern. Kami membantu brand membangun dan
+                        mempertahankan komunitas online dengan pendekatan yang
+                        autentik dan terencana. Platform yang kami kelola mencakup
+                        Instagram, Facebook, LinkedIn, TikTok dan lainnya.</p>
+                    <h3>Strategi Konten</h3>
+                    <p>Kami menyusun kalender konten yang seimbang antara edukasi,
+                        hiburan dan promosi. Konten disesuaikan dengan kebutuhan
+                        audiens dan tren terkini.</p>
+                    <h3>Komunitas &amp; Moderasi</h3>
+                    <p>Interaksi dua arah sangat penting. Tim kami merespon komentar,
+                        pesan langsung dan mengelola komunitas untuk menjaga reputasi
+                        brand.</p>
+                    <h3>Kampanye Influencer</h3>
+                    <p>Kolaborasi dengan influencer yang sesuai meningkatkan jangkauan
+                        dan kredibilitas. Kami mengidentifikasi, mengelola dan
+                        mengevaluasi kampanye influencer dari awal hingga akhir.</p>
+                    <p>Analitik memegang peran penting dalam manajemen media sosial.
+                        Kami memantau metrik seperti engagement rate, reach,
+                        sentiment dan follower growth untuk mengevaluasi
+                        efektivitas strategi. Insight yang diperoleh menjadi
+                        dasar optimasi konten di masa mendatang.</p>
+                    <p>Pemasaran berbayar di media sosial (paid social) juga termasuk
+                        dalam layanan kami. Melalui penargetan yang tepat,
+                        retargeting dan penggunaan lookalike audience, kami
+                        membantu klien memperluas jangkauan secara efisien
+                        sambil menjaga ROI yang positif.</p>
+                    <p>Kami memahami pentingnya manajemen krisis di media sosial.
+                        Reputasi brand dapat berubah dengan cepat ketika
+                        menghadapi ulasan negatif atau isu publik. Tim kami
+                        dilatih untuk merespons secara cepat dan empatik,
+                        menjaga komunikasi transparan dan memulihkan kepercayaan
+                        audiens.</p>
+                    <p>Memonitor tren dan perkembangan di setiap platform
+                        memungkinkan kami menciptakan konten yang relevan dengan
+                        budaya populer. Dari format video pendek hingga live
+                        streaming, kami menyesuaikan konten agar memanfaatkan
+                        algoritma terbaru dan preferensi pengguna. Setiap
+                        kampanye dirancang untuk memicu interaksi dan
+                        percakapan.</p>
+                </div>
                 <!-- Removed back button; use navigation menu to return to services. -->
             </div>
         </section>
@@ -1058,53 +1128,55 @@
             <div class="overlay"></div>
             <div class="page-content">
                 <img class="service-illustration" src="./seo_large.png" alt="SEO Illustration">
-                <h2>SEO / SEM</h2>
-                <p>Optimasi mesin pencari dan pemasaran mesin pencari membantu
-                    brand Anda ditemukan oleh calon pelanggan. Kami
-                    menyediakan solusi SEO menyeluruh mulai dari riset kata
-                    kunci, optimasi on‑page, link building hingga teknis SEO.
-                    Untuk SEM, kami mengelola kampanye iklan berbayar
-                    (Google Ads, Bing Ads, dsb.) yang terukur dan efisien.</p>
-                <h3>Riset &amp; Strategi Kata Kunci</h3>
-                <p>Kami menganalisis kata kunci berdasarkan volume pencarian,
-                    persaingan dan relevansi untuk menentukan peluang terbaik.
-                    Strategi konten kemudian diselaraskan dengan temuan ini.</p>
-                <h3>Optimasi On‑Page &amp; Teknis</h3>
-                <p>Memastikan struktur situs, metadata, kecepatan, dan
-                    pengalaman pengguna sesuai dengan best practice Google
-                    adalah prioritas kami. Kami melakukan audit teknis dan
-                    rekomendasi perbaikan.</p>
-                <h3>PPC &amp; CRO</h3>
-                <p>Kampanye SEM terukur berjalan berdampingan dengan optimasi
-                    konversi (Conversion Rate Optimization) agar trafik yang
-                    datang menghasilkan nilai. Ini termasuk A/B testing,
-                    optimasi landing page dan analisis heat map.</p>
-                <p>Optimasi lokal adalah elemen penting bagi bisnis yang
-                    menargetkan pelanggan di area tertentu. Kami
-                    mengoptimalkan listing Google Business Profile,
-                    menciptakan konten lokal dan membangun tautan dari
-                    direktori regional untuk meningkatkan visibilitas
-                    lokal.</p>
-                <p>SEO teknis mencakup peningkatan kecepatan situs,
-                    struktur data terstruktur, keamanan HTTPS, dan
-                    mobile‑friendliness. Kami melakukan audit berkala
-                    untuk memastikan situs memenuhi standar terbaru
-                    Google sehingga dapat meraih peringkat yang lebih
-                    tinggi secara organik.</p>
-                <p>Algoritma mesin pencari terus berevolusi. Kami mengikuti
-                    perkembangan seperti Google Core Updates, perubahan
-                    dalam interpretasi intent pencarian, dan sinyal baru
-                    seperti user experience. Dengan menyesuaikan strategi
-                    konten dan teknis sesuai update, kami memastikan
-                    situs klien tetap kompetitif dan tidak terkena
-                    penalti.</p>
-                <p>Pengukuran dan pelaporan adalah bagian integral dari
-                    layanan SEO/SEM kami. Kami menyediakan dashboard
-                    terintegrasi yang menampilkan metrik utama seperti
-                    impressions, CTR, average position, bounce rate,
-                    conversion rate dan ROI. Data ini membantu klien
-                    memahami nilai setiap aktivitas dan menentukan
-                    langkah selanjutnya.</p>
+                <div data-i18n-html="detail.seo">
+                    <h2>SEO / SEM</h2>
+                    <p>Optimasi mesin pencari dan pemasaran mesin pencari membantu
+                        brand Anda ditemukan oleh calon pelanggan. Kami
+                        menyediakan solusi SEO menyeluruh mulai dari riset kata
+                        kunci, optimasi on‑page, link building hingga teknis SEO.
+                        Untuk SEM, kami mengelola kampanye iklan berbayar
+                        (Google Ads, Bing Ads, dsb.) yang terukur dan efisien.</p>
+                    <h3>Riset &amp; Strategi Kata Kunci</h3>
+                    <p>Kami menganalisis kata kunci berdasarkan volume pencarian,
+                        persaingan dan relevansi untuk menentukan peluang terbaik.
+                        Strategi konten kemudian diselaraskan dengan temuan ini.</p>
+                    <h3>Optimasi On‑Page &amp; Teknis</h3>
+                    <p>Memastikan struktur situs, metadata, kecepatan, dan
+                        pengalaman pengguna sesuai dengan best practice Google
+                        adalah prioritas kami. Kami melakukan audit teknis dan
+                        rekomendasi perbaikan.</p>
+                    <h3>PPC &amp; CRO</h3>
+                    <p>Kampanye SEM terukur berjalan berdampingan dengan optimasi
+                        konversi (Conversion Rate Optimization) agar trafik yang
+                        datang menghasilkan nilai. Ini termasuk A/B testing,
+                        optimasi landing page dan analisis heat map.</p>
+                    <p>Optimasi lokal adalah elemen penting bagi bisnis yang
+                        menargetkan pelanggan di area tertentu. Kami
+                        mengoptimalkan listing Google Business Profile,
+                        menciptakan konten lokal dan membangun tautan dari
+                        direktori regional untuk meningkatkan visibilitas
+                        lokal.</p>
+                    <p>SEO teknis mencakup peningkatan kecepatan situs,
+                        struktur data terstruktur, keamanan HTTPS, dan
+                        mobile‑friendliness. Kami melakukan audit berkala
+                        untuk memastikan situs memenuhi standar terbaru
+                        Google sehingga dapat meraih peringkat yang lebih
+                        tinggi secara organik.</p>
+                    <p>Algoritma mesin pencari terus berevolusi. Kami mengikuti
+                        perkembangan seperti Google Core Updates, perubahan
+                        dalam interpretasi intent pencarian, dan sinyal baru
+                        seperti user experience. Dengan menyesuaikan strategi
+                        konten dan teknis sesuai update, kami memastikan
+                        situs klien tetap kompetitif dan tidak terkena
+                        penalti.</p>
+                    <p>Pengukuran dan pelaporan adalah bagian integral dari
+                        layanan SEO/SEM kami. Kami menyediakan dashboard
+                        terintegrasi yang menampilkan metrik utama seperti
+                        impressions, CTR, average position, bounce rate,
+                        conversion rate dan ROI. Data ini membantu klien
+                        memahami nilai setiap aktivitas dan menentukan
+                        langkah selanjutnya.</p>
+                </div>
                 <!-- Removed back button; use navigation menu to return to services. -->
             </div>
         </section>
@@ -1116,8 +1188,8 @@
             </video>
             <div class="overlay"></div>
             <div class="container text-center">
-                <h2 class="accent mb-4">Our Partners</h2>
-                <p class="mb-4">We collaborate with numerous brands to maximise our clients’
+                <h2 class="accent mb-4" data-i18n="partners.heading">Our Partners</h2>
+                <p class="mb-4" data-i18n="partners.description">We collaborate with numerous brands to maximise our clients’
                     success. Below you’ll find our partners’ official logos, sourced directly from the TSL partner page. These images
                     preserve their original look without modification.</p>
                 <!-- Display the actual partner logos downloaded from the official TSL partner page -->
@@ -1147,25 +1219,25 @@
             </video>
             <div class="overlay"></div>
             <div class="container text-center">
-                <h2 class="accent mb-4">Articles</h2>
-                <p class="mb-4">Baca analisis dan panduan mendalam dari tim TSL untuk memajukan
+                <h2 class="accent mb-4" data-i18n="articles.heading">Articles</h2>
+                <p class="mb-4" data-i18n="articles.description">Baca analisis dan panduan mendalam dari tim TSL untuk memajukan
                     strategi pemasaran Anda.</p>
                 <div class="grid">
                     <div class="service-card" data-link="article1">
                         <!-- Local images for article cards to prevent broken links -->
                         <img src="./article1_image.png" alt="Article 1 Image">
-                        <h3>Konten Maksimal, Performa Rendah?</h3>
-                        <p>Kenapa konten yang sudah maksimal belum tentu berhasil?</p>
+                        <h3 data-i18n="articles.card1.title">Konten Maksimal, Performa Rendah?</h3>
+                        <p data-i18n="articles.card1.copy">Kenapa konten yang sudah maksimal belum tentu berhasil?</p>
                     </div>
                     <div class="service-card" data-link="article2">
                         <img src="./article2_image.png" alt="Article 2 Image">
-                        <h3>Pentingnya Memahami Audiens</h3>
-                        <p>Kenali audiens Anda sebelum memulai strategi digital.</p>
+                        <h3 data-i18n="articles.card2.title">Pentingnya Memahami Audiens</h3>
+                        <p data-i18n="articles.card2.copy">Kenali audiens Anda sebelum memulai strategi digital.</p>
                     </div>
                     <div class="service-card" data-link="article3">
                         <img src="./article3_image.png" alt="Article 3 Image">
-                        <h3>Kehadiran Digital Bermakna</h3>
-                        <p>Strategi untuk menciptakan kehadiran digital yang efektif.</p>
+                        <h3 data-i18n="articles.card3.title">Kehadiran Digital Bermakna</h3>
+                        <p data-i18n="articles.card3.copy">Strategi untuk menciptakan kehadiran digital yang efektif.</p>
                     </div>
                 </div>
             </div>
@@ -1180,32 +1252,34 @@
             <div class="page-content">
                 <!-- Single illustration for Article 1 -->
                 <img class="article-illustration" src="./article1_image.png" alt="Content Performance Illustration">
-                <h2>Konten Sudah Maksimal, Performa Masih Rendah?</h2>
-                <p>Artikel ini membahas mengapa konten yang telah dibuat dengan penuh usaha
-                    bisa saja tidak menghasilkan performa yang diharapkan. Faktor
-                    seperti algoritma, relevansi dengan audiens, waktu
-                    publikasi, dan konsistensi dapat berpengaruh besar.
-                    Selain itu, diperlukan pemahaman yang baik tentang data
-                    analitik untuk terus memperbaiki konten.</p>
-                <p>Beberapa langkah yang dapat dilakukan untuk mengoptimalkan performa
-                    konten termasuk melakukan riset tren, menggunakan visual
-                    yang menarik, menulis caption yang mengajak audiens
-                    berdiskusi, serta menguji berbagai format (video,
-                    carousel, live streaming). Jangan lupa untuk mengevaluasi
-                    setiap hasil dan belajar dari konten yang sukses.
-                </p>
-                <p>Selain menyesuaikan format, penting juga untuk memahami algoritma platform yang terus berubah. Engaging dengan audiens melalui komentar, mengadakan sesi Q&A atau live streaming, serta mengoptimalkan penggunaan hashtag membantu konten Anda ditemukan. Jangan lupa untuk selalu mendorong tindakan dengan call&nbsp;to&nbsp;action (CTA) yang jelas dan relevan.</p>
-                <p>Data analitik adalah teman terbaik Anda. Dengan memeriksa
-                    metrik seperti view, klik, watch time, share dan
-                    komentar, Anda dapat memahami bagaimana audiens
-                    berinteraksi dengan konten. Pelajari pola dan waktu
-                    posting yang menghasilkan performa terbaik, lalu
-                    iterasikan strategi Anda.</p>
-                <p>Kustomisasi untuk setiap platform juga penting. Konten yang
-                    sukses di Instagram belum tentu berhasil di LinkedIn
-                    atau TikTok. Sesuaikan format, durasi dan gaya
-                    komunikasi dengan karakteristik audiens di setiap
-                    platform untuk memaksimalkan jangkauan dan keterlibatan.</p>
+                <div data-i18n-html="article1.content">
+                    <h2>Konten Sudah Maksimal, Performa Masih Rendah?</h2>
+                    <p>Artikel ini membahas mengapa konten yang telah dibuat dengan penuh usaha
+                        bisa saja tidak menghasilkan performa yang diharapkan. Faktor
+                        seperti algoritma, relevansi dengan audiens, waktu
+                        publikasi, dan konsistensi dapat berpengaruh besar.
+                        Selain itu, diperlukan pemahaman yang baik tentang data
+                        analitik untuk terus memperbaiki konten.</p>
+                    <p>Beberapa langkah yang dapat dilakukan untuk mengoptimalkan performa
+                        konten termasuk melakukan riset tren, menggunakan visual
+                        yang menarik, menulis caption yang mengajak audiens
+                        berdiskusi, serta menguji berbagai format (video,
+                        carousel, live streaming). Jangan lupa untuk mengevaluasi
+                        setiap hasil dan belajar dari konten yang sukses.
+                    </p>
+                    <p>Selain menyesuaikan format, penting juga untuk memahami algoritma platform yang terus berubah. Engaging dengan audiens melalui komentar, mengadakan sesi Q&amp;A atau live streaming, serta mengoptimalkan penggunaan hashtag membantu konten Anda ditemukan. Jangan lupa untuk selalu mendorong tindakan dengan call&nbsp;to&nbsp;action (CTA) yang jelas dan relevan.</p>
+                    <p>Data analitik adalah teman terbaik Anda. Dengan memeriksa
+                        metrik seperti view, klik, watch time, share dan
+                        komentar, Anda dapat memahami bagaimana audiens
+                        berinteraksi dengan konten. Pelajari pola dan waktu
+                        posting yang menghasilkan performa terbaik, lalu
+                        iterasikan strategi Anda.</p>
+                    <p>Kustomisasi untuk setiap platform juga penting. Konten yang
+                        sukses di Instagram belum tentu berhasil di LinkedIn
+                        atau TikTok. Sesuaikan format, durasi dan gaya
+                        komunikasi dengan karakteristik audiens di setiap
+                        platform untuk memaksimalkan jangkauan dan keterlibatan.</p>
+                </div>
                 <!-- Removed back button; use the navigation menu to access article list. -->
             </div>
         </section>
@@ -1219,29 +1293,31 @@
             <div class="page-content">
                 <!-- Single illustration for Article 2 -->
                 <img class="article-illustration" src="./article2_image.png" alt="Understand Your Audience Illustration">
-                <h2>Seberapa Penting Memahami Audiens dalam Strategi Digital Marketing?</h2>
-                <p>Memahami audiens adalah fondasi strategi digital marketing yang
-                    efektif. Dengan mengetahui siapa audiens Anda, kebutuhan
-                    mereka, serta perilaku mereka di dunia digital, Anda
-                    dapat membuat konten yang relevan dan resonan.</p>
-                <p>Persona adalah salah satu alat untuk memahami audiens. Dengan
-                    membuat persona yang mewakili segmen audiens berbeda,
-                    Anda dapat menyesuaikan pesan. Selain itu, jangan
-                    lupa memanfaatkan alat analitik dan social listening
-                    untuk mendapatkan wawasan lebih dalam.</p>
-                <p>Pastikan juga untuk menguji berbagai pendekatan melalui A/B testing. Cobalah variasi judul, isi pesan, dan format iklan untuk melihat mana yang paling efektif. Analisis yang tepat akan membantu Anda memfokuskan anggaran pada strategi yang memberi hasil terbaik.</p>
-                <p>Segmentasi audiens bisa dilakukan berdasarkan demografi,
-                    psikografi, perilaku atau minat. Semakin spesifik
-                    segmentasi Anda, semakin tepat sasaran pesan yang
-                    disampaikan. Gunakan data dari analytics tools,
-                    survei maupun interaksi di media sosial untuk
-                    memperkaya pemahaman Anda.</p>
-                <p>Interaksi dengan audiens juga merupakan sumber insight.
-                    Tanggapi komentar dan pesan, ajukan pertanyaan
-                    dalam story atau postingan, dan lakukan polling
-                    sederhana untuk mengetahui preferensi mereka.
-                    Semua masukan ini membantu membentuk strategi
-                    komunikasi yang lebih personal dan efektif.</p>
+                <div data-i18n-html="article2.content">
+                    <h2>Seberapa Penting Memahami Audiens dalam Strategi Digital Marketing?</h2>
+                    <p>Memahami audiens adalah fondasi strategi digital marketing yang
+                        efektif. Dengan mengetahui siapa audiens Anda, kebutuhan
+                        mereka, serta perilaku mereka di dunia digital, Anda
+                        dapat membuat konten yang relevan dan resonan.</p>
+                    <p>Persona adalah salah satu alat untuk memahami audiens. Dengan
+                        membuat persona yang mewakili segmen audiens berbeda,
+                        Anda dapat menyesuaikan pesan. Selain itu, jangan
+                        lupa memanfaatkan alat analitik dan social listening
+                        untuk mendapatkan wawasan lebih dalam.</p>
+                    <p>Pastikan juga untuk menguji berbagai pendekatan melalui A/B testing. Cobalah variasi judul, isi pesan, dan format iklan untuk melihat mana yang paling efektif. Analisis yang tepat akan membantu Anda memfokuskan anggaran pada strategi yang memberi hasil terbaik.</p>
+                    <p>Segmentasi audiens bisa dilakukan berdasarkan demografi,
+                        psikografi, perilaku atau minat. Semakin spesifik
+                        segmentasi Anda, semakin tepat sasaran pesan yang
+                        disampaikan. Gunakan data dari analytics tools,
+                        survei maupun interaksi di media sosial untuk
+                        memperkaya pemahaman Anda.</p>
+                    <p>Interaksi dengan audiens juga merupakan sumber insight.
+                        Tanggapi komentar dan pesan, ajukan pertanyaan
+                        dalam story atau postingan, dan lakukan polling
+                        sederhana untuk mengetahui preferensi mereka.
+                        Semua masukan ini membantu membentuk strategi
+                        komunikasi yang lebih personal dan efektif.</p>
+                </div>
                 <!-- Removed back button; use the navigation menu to access article list. -->
             </div>
         </section>
@@ -1255,27 +1331,29 @@
             <div class="page-content">
                 <!-- Single illustration for Article 3 -->
                 <img class="article-illustration" src="./article3_image.png" alt="Meaningful Digital Presence Illustration">
-                <h2>Kehadiran Digital yang Bermakna Dimulai dari Strategi yang Tepat</h2>
-                <p>Membangun kehadiran digital bukan sekedar memposting secara rutin.
-                    Diperlukan strategi yang terstruktur mulai dari pemilihan
-                    platform, konsistensi brand, integrasi dengan
-                    kampanye offline, hingga pengukuran efektifitas.</p>
-                <p>Merancang kehadiran digital yang bermakna juga berarti
-                    mengutamakan kualitas konten, keautentikan, serta
-                    interaksi dua arah dengan audiens. Kesemuanya harus
-                    direncanakan dengan tujuan dan indikator keberhasilan
-                    yang jelas.</p>
-                <p>Kehadiran yang kuat juga membutuhkan sinergi antara saluran online dan offline. Pastikan pesan brand konsisten di semua touchpoint, dari media sosial hingga acara komunitas. Dengan pendekatan holistik, Anda akan menciptakan pengalaman yang kohesif dan meningkatkan loyalitas pelanggan.</p>
-                <p>Identifikasi tujuan utama Anda. Apakah Anda ingin
-                    meningkatkan brand awareness, mendorong penjualan,
-                    memperkuat komunitas atau posisi thought leadership?
-                    Tujuan yang jelas membantu Anda menentukan platform,
-                    jenis konten dan metrik keberhasilan yang tepat.</p>
-                <p>Integrasikan strategi offline dan online. Kehadiran digital
-                    yang kuat sebaiknya mendukung aktivitas offline,
-                    seperti peluncuran produk, event atau promosi.
-                    Pastikan pesan yang disampaikan konsisten agar
-                    brand Anda mudah diingat dan dipercaya oleh audiens.</p>
+                <div data-i18n-html="article3.content">
+                    <h2>Kehadiran Digital yang Bermakna Dimulai dari Strategi yang Tepat</h2>
+                    <p>Membangun kehadiran digital bukan sekedar memposting secara rutin.
+                        Diperlukan strategi yang terstruktur mulai dari pemilihan
+                        platform, konsistensi brand, integrasi dengan
+                        kampanye offline, hingga pengukuran efektifitas.</p>
+                    <p>Merancang kehadiran digital yang bermakna juga berarti
+                        mengutamakan kualitas konten, keautentikan, serta
+                        interaksi dua arah dengan audiens. Kesemuanya harus
+                        direncanakan dengan tujuan dan indikator keberhasilan
+                        yang jelas.</p>
+                    <p>Kehadiran yang kuat juga membutuhkan sinergi antara saluran online dan offline. Pastikan pesan brand konsisten di semua touchpoint, dari media sosial hingga acara komunitas. Dengan pendekatan holistik, Anda akan menciptakan pengalaman yang kohesif dan meningkatkan loyalitas pelanggan.</p>
+                    <p>Identifikasi tujuan utama Anda. Apakah Anda ingin
+                        meningkatkan brand awareness, mendorong penjualan,
+                        memperkuat komunitas atau posisi thought leadership?
+                        Tujuan yang jelas membantu Anda menentukan platform,
+                        jenis konten dan metrik keberhasilan yang tepat.</p>
+                    <p>Integrasikan strategi offline dan online. Kehadiran digital
+                        yang kuat sebaiknya mendukung aktivitas offline,
+                        seperti peluncuran produk, event atau promosi.
+                        Pastikan pesan yang disampaikan konsisten agar
+                        brand Anda mudah diingat dan dipercaya oleh audiens.</p>
+                </div>
                 <!-- Removed back button; use the navigation menu to access article list. -->
             </div>
         </section>
@@ -1287,37 +1365,37 @@
             </video>
             <div class="overlay"></div>
             <div class="page-content">
-                <h2>Frequently Asked Questions (FAQ)</h2>
+                <h2 data-i18n="faq.heading">Frequently Asked Questions (FAQ)</h2>
                 <div class="accordion">
                     <div class="accordion-item">
                         <div class="question">
-                            <span>How do I start working with TSL?</span>
+                            <span data-i18n="faq.q1.question">How do I start working with TSL?</span>
                             <span class="icon">▶</span>
                         </div>
                         <div class="answer">
-                            <p>You can reach us via the contact form in the Contact section
+                            <p data-i18n="faq.q1.answer">You can reach us via the contact form in the Contact section
                                 or through WhatsApp. We will schedule a meeting to discuss
                                 your business needs and provide a tailored strategy proposal.</p>
                         </div>
                     </div>
                     <div class="accordion-item">
                         <div class="question">
-                            <span>Which industries has TSL served?</span>
+                            <span data-i18n="faq.q2.question">Which industries has TSL served?</span>
                             <span class="icon">▶</span>
                         </div>
                         <div class="answer">
-                            <p>TSL has worked across industries such as FMCG, technology,
+                            <p data-i18n="faq.q2.answer">TSL has worked across industries such as FMCG, technology,
                                 education, healthcare, real estate and more. Each strategy
                                 is customised to the unique characteristics of the industry.</p>
                         </div>
                     </div>
                     <div class="accordion-item">
                         <div class="question">
-                            <span>Does TSL provide offline services?</span>
+                            <span data-i18n="faq.q3.question">Does TSL provide offline services?</span>
                             <span class="icon">▶</span>
                         </div>
                         <div class="answer">
-                            <p>Yes. In addition to digital services, we also provide
+                            <p data-i18n="faq.q3.answer">Yes. In addition to digital services, we also provide
                                 branding activations, press releases, event marketing
                                 and other offline services integrated with our online
                                 strategies.</p>
@@ -1326,57 +1404,57 @@
                     <!-- Additional FAQs added for a more comprehensive help section -->
                     <div class="accordion-item">
                         <div class="question">
-                            <span>How long does a typical project take?</span>
+                            <span data-i18n="faq.q4.question">How long does a typical project take?</span>
                             <span class="icon">▶</span>
                         </div>
                         <div class="answer">
-                            <p>The timeline varies depending on the scope and objectives. Small campaigns may run for a few weeks, while comprehensive branding and digital transformation projects can take several months. We always outline a detailed timeline during our proposal stage.</p>
+                            <p data-i18n="faq.q4.answer">The timeline varies depending on the scope and objectives. Small campaigns may run for a few weeks, while comprehensive branding and digital transformation projects can take several months. We always outline a detailed timeline during our proposal stage.</p>
                         </div>
                     </div>
                     <div class="accordion-item">
                         <div class="question">
-                            <span>What differentiates TSL from other agencies?</span>
+                            <span data-i18n="faq.q5.question">What differentiates TSL from other agencies?</span>
                             <span class="icon">▶</span>
                         </div>
                         <div class="answer">
-                            <p>TSL offers a 360° integrated approach that combines online and offline strategies tailored to your brand. Our team covers e‑commerce management, design, media production, social media, SEO/SEM and event activations under one roof, ensuring cohesion and consistency.</p>
+                            <p data-i18n="faq.q5.answer">TSL offers a 360° integrated approach that combines online and offline strategies tailored to your brand. Our team covers e‑commerce management, design, media production, social media, SEO/SEM and event activations under one roof, ensuring cohesion and consistency.</p>
                         </div>
                     </div>
                     <div class="accordion-item">
                         <div class="question">
-                            <span>How much do your services cost?</span>
+                            <span data-i18n="faq.q6.question">How much do your services cost?</span>
                             <span class="icon">▶</span>
                         </div>
                         <div class="answer">
-                            <p>Pricing depends on the services you require and the complexity of the project. After an initial consultation to understand your needs, we will provide a customised proposal outlining the recommended services and associated costs.</p>
+                            <p data-i18n="faq.q6.answer">Pricing depends on the services you require and the complexity of the project. After an initial consultation to understand your needs, we will provide a customised proposal outlining the recommended services and associated costs.</p>
                         </div>
                     </div>
                     <!-- Further frequently asked questions to provide more clarity -->
                     <div class="accordion-item">
                         <div class="question">
-                            <span>Can TSL handle cross‑border campaigns?</span>
+                            <span data-i18n="faq.q7.question">Can TSL handle cross‑border campaigns?</span>
                             <span class="icon">▶</span>
                         </div>
                         <div class="answer">
-                            <p>Yes. Our experience includes running regional and international campaigns. We adapt messaging to local cultures and regulations while maintaining your brand’s core identity, ensuring consistent and compliant communication across markets.</p>
+                            <p data-i18n="faq.q7.answer">Yes. Our experience includes running regional and international campaigns. We adapt messaging to local cultures and regulations while maintaining your brand’s core identity, ensuring consistent and compliant communication across markets.</p>
                         </div>
                     </div>
                     <div class="accordion-item">
                         <div class="question">
-                            <span>How do you measure campaign success?</span>
+                            <span data-i18n="faq.q8.question">How do you measure campaign success?</span>
                             <span class="icon">▶</span>
                         </div>
                         <div class="answer">
-                            <p>We define KPIs with you at the outset, such as reach, engagement, leads generated, conversion rate, and return on ad spend. Through regular reporting and data dashboards, we track progress and adjust tactics to achieve agreed objectives.</p>
+                            <p data-i18n="faq.q8.answer">We define KPIs with you at the outset, such as reach, engagement, leads generated, conversion rate, and return on ad spend. Through regular reporting and data dashboards, we track progress and adjust tactics to achieve agreed objectives.</p>
                         </div>
                     </div>
                     <div class="accordion-item">
                         <div class="question">
-                            <span>Do you work with small businesses and startups?</span>
+                            <span data-i18n="faq.q9.question">Do you work with small businesses and startups?</span>
                             <span class="icon">▶</span>
                         </div>
                         <div class="answer">
-                            <p>Absolutely. We tailor our services to match your scale and budget, whether you’re a startup seeking brand awareness or an SME looking to scale. Our modular approach allows you to choose only the services you need.</p>
+                            <p data-i18n="faq.q9.answer">Absolutely. We tailor our services to match your scale and budget, whether you’re a startup seeking brand awareness or an SME looking to scale. Our modular approach allows you to choose only the services you need.</p>
                         </div>
                     </div>
                 </div>
@@ -1391,13 +1469,13 @@
             </video>
             <div class="overlay"></div>
             <div class="container text-center">
-                <h2 class="accent mb-4">About Us</h2>
-                <p class="mb-4">TSL is a 360° marketing agency that goes beyond digital. We
+                <h2 class="accent mb-4" data-i18n="about.heading">About Us</h2>
+                <p class="mb-4" data-i18n="about.intro">TSL is a 360° marketing agency that goes beyond digital. We
                     manage e‑commerce, social media, SEO/SEM, and offline strategies
                     such as branding activations, press releases and event
                     marketing. Our mission is to keep your brand relevant across all
                     touchpoints.</p>
-                <h3 class="accent mb-3">Our Team</h3>
+                <h3 class="accent mb-3" data-i18n="about.teamHeading">Our Team</h3>
                 <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); display: none;">
                     <!-- Team member: Vanessa -->
                     <div class="service-card" style="cursor:default;">
@@ -1468,7 +1546,7 @@
                 </div>
                 <div class="team-photo">
                     <img src="./team_group.png" alt="Tim TSL" style="max-width:80%; border-radius: var(--border-radius); box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
-                    <p class="mt-4">Vanessa (Founder &amp; CEO), Dian (Content Creator), Agam (Content Manager), Rizky (Human Resources), Febri (Project Manager), Rifqy (AI Specialist), Qoffal (Sales Manager), Deva (Content Creator), Reza (Marketing Specialist), Sopian (SEO/SEM Manager), Host live streamer &amp; lainnya.</p>
+                    <p class="mt-4" data-i18n="about.teamCaption">Vanessa (Founder &amp; CEO), Dian (Content Creator), Agam (Content Manager), Rizky (Human Resources), Febri (Project Manager), Rifqy (AI Specialist), Qoffal (Sales Manager), Deva (Content Creator), Reza (Marketing Specialist), Sopian (SEO/SEM Manager), Host live streamer &amp; lainnya.</p>
                 </div>
                 <!-- Removed back button; navigation is handled via the header menu. -->
             </div>
@@ -1481,11 +1559,11 @@
             </video>
             <div class="overlay"></div>
             <div class="container text-center">
-                <h2 class="accent mb-4">Contact Us</h2>
-                <p class="mb-4">Reach out through the channels below. We will respond promptly to your inquiry.</p>
+                <h2 class="accent mb-4" data-i18n="contact.heading">Contact Us</h2>
+                <p class="mb-4" data-i18n="contact.description">Reach out through the channels below. We will respond promptly to your inquiry.</p>
                 <div class="contact-details">
                     <div class="contact-card">
-                        <h3 class="accent">Visit Our Office</h3>
+                        <h3 class="accent" data-i18n="contact.officeHeading">Visit Our Office</h3>
                         <p>
                             <a href="https://maps.app.goo.gl/f4gb46TwAusM1wpj6" target="_blank" rel="noopener">
                                 Ruko Bolsena, Curug Sangereng,<br>
@@ -1493,22 +1571,22 @@
                                 Banten 15810
                             </a>
                         </p>
-                        <p>Operational hours: Senin – Jumat, 09.00 – 18.00 WIB.</p>
+                        <p data-i18n="contact.officeHours">Operational hours: Senin – Jumat, 09.00 – 18.00 WIB.</p>
                     </div>
                     <div class="contact-card">
-                        <h3 class="accent">Direct Channels</h3>
+                        <h3 class="accent" data-i18n="contact.directHeading">Direct Channels</h3>
                         <p>
-                            <strong>Phone / WhatsApp</strong><br>
+                            <strong data-i18n="contact.phoneLabel">Phone / WhatsApp</strong><br>
                             <a href="https://wa.me/6281575020815" target="_blank" rel="noopener">+62 815 7502 0815</a>
                         </p>
                         <p>
-                            <strong>Email</strong><br>
+                            <strong data-i18n="contact.emailLabel">Email</strong><br>
                             <a href="mailto:project@thesociallinked.co.id">project@thesociallinked.co.id</a>
                         </p>
                     </div>
                     <div class="contact-card">
-                        <h3 class="accent">Stay Connected</h3>
-                        <p>Ikuti kami untuk update layanan dan campaign terbaru.</p>
+                        <h3 class="accent" data-i18n="contact.socialHeading">Stay Connected</h3>
+                        <p data-i18n="contact.socialCopy">Ikuti kami untuk update layanan dan campaign terbaru.</p>
                         <p>
                             <a href="https://www.linkedin.com/company/the-social-linked/" target="_blank" rel="noopener">LinkedIn</a><br>
                             <a href="https://www.instagram.com/thesociallinked/" target="_blank" rel="noopener">Instagram</a>
@@ -1516,64 +1594,272 @@
                     </div>
                 </div>
                 <div class="contact-actions">
-                    <a class="contact-button" href="mailto:project@thesociallinked.co.id">Email Us</a>
-                    <a class="contact-button secondary" href="https://wa.me/6281575020815" target="_blank" rel="noopener">Chat on WhatsApp</a>
+                    <a class="contact-button" href="mailto:project@thesociallinked.co.id" data-i18n="contact.emailCta">Email Us</a>
+                    <a class="contact-button secondary" href="https://wa.me/6281575020815" target="_blank" rel="noopener" data-i18n="contact.whatsappCta">Chat on WhatsApp</a>
                 </div>
             </div>
         </section>
     </main>
     <!-- Footer -->
     <footer>
-        <p>© 2025 The Social Linked. All rights reserved.</p>
+        <p data-i18n="footer.copy">© 2025 The Social Linked. All rights reserved.</p>
         <!-- Informasi di situs ini removed as per user request -->
     </footer>
     <!-- JavaScript: Router, Theme Toggle, Accordion, Slider & Form Submission -->
-    <script>
+        <script>
     (function() {
         'use strict';
         /*
-         * This script handles navigation, theme switching, the FAQ accordion,
-         * and general interactive behaviour.  Contact details are now static
-         * so no client-side form submission is required.
+         * This script handles navigation, theme switching, language localisation,
+         * the FAQ accordion, and general interactive behaviour.
          */
         const sections = document.querySelectorAll('.section');
-        // All elements with a data-link attribute will act as navigation triggers.
         const linkElements = document.querySelectorAll('[data-link]');
         const navLinks = document.querySelectorAll('nav a');
         const themeSwitch = document.getElementById('themeSwitch');
+        const languageSwitch = document.getElementById('languageSwitch');
         const body = document.body;
 
-        // Navigation / Router
+        const translations = {
+            en: {
+            'nav.home': 'Home',
+            'nav.services': 'Services',
+            'nav.partners': 'Partners',
+            'nav.articles': 'Articles',
+            'nav.faq': 'FAQ',
+            'nav.about': 'About',
+            'nav.contact': 'Contact',
+            'hero.title': 'ELEVATE YOUR BUSINESS',
+            'hero.subtitle': 'We Provide 360° Integrated Marketing Services',
+            'hero.cta': 'Contact Us',
+            'services.heading': 'Our Services',
+            'services.description': 'TSL offers a variety of services to help your business grow. Click a card to learn more about each service.',
+            'services.digital.title': 'Digital Marketing',
+            'services.digital.copy': 'Integrated online marketing strategies including advertising, email and analytics.',
+            'services.visual.title': 'Visual Design',
+            'services.visual.copy': 'Visual identity, UI/UX design, illustration and animation for your brand.',
+            'services.social.title': 'Social Media Management',
+            'services.social.copy': 'Grow your community and optimise your social platforms.',
+            'services.seo.title': 'SEO / SEM',
+            'services.seo.copy': 'Increase your visibility on search engines through SEO and PPC advertising.',
+            'detail.digital': "<h2>Digital Marketing</h2>\n                    <p>TSL delivers integrated digital marketing services, combining paid advertising (PPC), email marketing, social media campaigns, marketing automation, and analytics. We recognise that every business has unique requirements, so our digital strategies are tailored to each client's objectives.</p>\n                    <h3>Paid Advertising (PPC)</h3>\n                    <p>We run campaigns on Google Ads, Meta Ads, TikTok Ads, and other platforms, ensuring every rupiah is invested wisely. Keyword research, audience segmentation, landing-page optimisation, and conversion tracking are all part of our workflow.</p>\n                    <h3>Email Marketing</h3>\n                    <p>Email marketing helps you maintain relationships with customers. We craft relevant newsletters, automated nurturing journeys, and promotional emails with engaging design. Platforms such as Mailchimp, Klaviyo, or bespoke systems are selected based on your needs.</p>\n                    <h3>Marketing Automation &amp; Analytics</h3>\n                    <p>We leverage tools like HubSpot and GA4 to trigger actions based on user behaviour. Real-time analytics provide transparent campaign performance for your team.</p>\n                    <p>Cross-channel integration is essential. Successful digital campaigns do not stand alone; PPC, email, social media, and SEO must reinforce one another. We connect every touchpoint so prospects can move through the journey smoothly, increasing conversion potential.</p>\n                    <p>Personalisation and continuous testing are core to our service. Through A/B testing on copy, creatives, CTAs, and landing pages we validate hypotheses and find the most effective approach. The data gathered improves current initiatives and informs long-term strategy.</p>\n                    <p>Retargeting plays a crucial role in driving conversions. Using pixel tracking we build audiences who have interacted with your brand and deliver relevant ads that encourage action. Funnels are designed to guide prospects from awareness to consideration and decision with ease.</p>\n                    <p>CRM integration allows us to connect customer data from every channel, enabling sharper segmentation and personalised messaging that maximises lifetime value and loyalty.</p>",
+            'detail.visual': "<h2>Visual Design</h2>\n                    <p>Powerful visuals help brands stand out in crowded markets. From logo creation to comprehensive identity systems, we work with you to express brand personality consistently. Our services cover UI/UX design, illustration, photography, and video production.</p>\n                    <h3>Brand Identity</h3>\n                    <p>We distil your brand essence into logos, colour palettes, typography, and visual styles. The brand guidelines we produce make implementation across every medium effortless.</p>\n                    <h3>UI/UX Design</h3>\n                    <p>Great user experiences increase satisfaction and conversion. We design intuitive, responsive, and aesthetic interfaces for web and mobile applications.</p>\n                    <h3>Illustration &amp; Motion Graphics</h3>\n                    <p>Custom illustrations and animation communicate messages effectively. We produce visual assets that support your brand story across video, infographics, and social media.</p>\n                    <p>Every design project begins with research. We study your target audience and business context to produce relevant concepts. Wireframes, mood boards, and prototypes help validate ideas before final execution, ensuring each element is both beautiful and functional.</p>\n                    <p>Consistency is key. We ensure colour palettes, typography, iconography, and illustration styles are applied uniformly across digital and print platforms so your brand is instantly recognisable and builds long-term trust.</p>\n                    <p>We also design packaging and printed materials such as brochures, catalogues, signage, and point-of-sale assets. These deliver a unified visual experience when your product appears on shelves, in customers' hands, or at events.</p>\n                    <p>Comprehensive brand guidelines safeguard long-term consistency. We document usage rules for logos, colours, typography, photography, iconography, and application examples so internal teams and external vendors can execute accurately.</p>",
+            'detail.social': '<h2>Social Media Management</h2>\n                    <p>A strong social presence is essential to modern marketing. We help brands build and sustain online communities with authentic, well-planned approaches across Instagram, Facebook, LinkedIn, TikTok, and more.</p>\n                    <h3>Content Strategy</h3>\n                    <p>We develop calendars that balance education, entertainment, and promotion. Content is tailored to audience needs and current trends.</p>\n                    <h3>Community &amp; Moderation</h3>\n                    <p>Two-way interaction matters. Our team responds to comments and direct messages while managing communities to protect your brand reputation.</p>\n                    <h3>Influencer Campaigns</h3>\n                    <p>Collaborating with the right influencers expands reach and credibility. We identify, manage, and evaluate partnerships end-to-end.</p>\n                    <p>Analytics are central to our social media management. We monitor metrics such as engagement rate, reach, sentiment, and follower growth to evaluate effectiveness and optimise future content.</p>\n                    <p>Paid social is also part of our service. Through precise targeting, retargeting, and lookalike audiences we scale reach efficiently while protecting ROI.</p>\n                    <p>We understand the importance of crisis management. Our team responds quickly and empathetically to negative reviews or public issues, maintaining transparent communication and restoring trust.</p>\n                    <p>By monitoring platform trends we produce content that fits popular culture. From short-form video to live streaming, we adapt formats to algorithm changes and audience preferences so every campaign sparks interaction and conversation.</p>',
+            'detail.seo': '<h2>SEO / SEM</h2>\n                    <p>Search engine optimisation and marketing help your brand get discovered. We provide end-to-end SEO solutions including keyword research, on-page optimisation, link building, and technical enhancements, while managing measurable SEM campaigns on Google Ads, Bing Ads, and beyond.</p>\n                    <h3>Keyword Research &amp; Strategy</h3>\n                    <p>We analyse search volume, competition, and relevance to uncover the best opportunities and align content strategy accordingly.</p>\n                    <h3>On-Page &amp; Technical Optimisation</h3>\n                    <p>We ensure site structure, metadata, speed, and user experience follow Google best practices. Technical audits and recommendations keep performance strong.</p>\n                    <h3>PPC &amp; CRO</h3>\n                    <p>Our SEM efforts run alongside conversion rate optimisation so every visit creates value through A/B testing, landing-page refinement, and heat-map analysis.</p>\n                    <p>Local optimisation is vital for location-focused businesses. We enhance Google Business Profiles, produce local content, and build regional backlinks to boost visibility.</p>\n                    <p>Technical SEO covers speed improvements, structured data, HTTPS security, and mobile friendliness. Regular audits keep your site aligned with the latest standards for higher organic rankings.</p>\n                    <p>Search algorithms constantly evolve. We stay on top of Google Core Updates, shifting intent interpretation, and new signals like user experience to keep your site competitive and penalty-free.</p>\n                    <p>Measurement and reporting are integral. Dashboards show key metrics such as impressions, CTR, average position, bounce rate, conversion rate, and ROI so you can see the value of every activity and decide next steps.</p>',
+            'partners.heading': 'Our Partners',
+            'partners.description': 'We collaborate with numerous brands to maximise our clients’ success. Below you’ll find our partners’ official logos, sourced directly from the TSL partner page. These images preserve their original look without modification.',
+            'articles.heading': 'Articles',
+            'articles.description': 'Read in-depth analyses and guides from the TSL team to move your marketing strategy forward.',
+            'articles.card1.title': 'Great Content, Low Performance?',
+            'articles.card1.copy': 'Why perfectly crafted content can still miss the mark.',
+            'articles.card2.title': 'The Power of Knowing Your Audience',
+            'articles.card2.copy': 'Understand your audience before launching any digital strategy.',
+            'articles.card3.title': 'Building a Meaningful Digital Presence',
+            'articles.card3.copy': 'Strategies to create an effective online presence.',
+            'article1.content': '<h2>Content Looks Great, but Performance Is Low?</h2>\n                    <p>This article explores why carefully crafted content may still underperform. Factors such as algorithms, audience relevance, publishing time, and consistency have major influence. A solid grasp of analytics is essential to keep improving.</p>\n                    <p>To optimise results, research trends, use compelling visuals, write captions that invite conversation, and test multiple formats from video to carousels and live streams. Always review outcomes and learn from top-performing content.</p>\n                    <p>Beyond format choices, understanding ever-changing platform algorithms is critical. Engage with your audience through comments, host Q&amp;A sessions or live streams, and optimise hashtags so content is discoverable. Always encourage action with clear, relevant calls to action.</p>\n                    <p>Analytics are your best ally. Track metrics such as views, clicks, watch time, shares, and comments to understand how audiences interact. Identify patterns and posting times that generate the best performance, then iterate your strategy.</p>\n                    <p>Customise for each platform. Content that succeeds on Instagram may not resonate on LinkedIn or TikTok. Adjust format, duration, and tone to match audience preferences so reach and engagement stay high everywhere.</p>',
+            'article2.content': '<h2>Why Understanding Your Audience Matters in Digital Marketing</h2>\n                    <p>Knowing your audience is the foundation of an effective digital marketing strategy. When you understand who they are, what they need, and how they behave online, you can deliver content that resonates.</p>\n                    <p>Personas help map out different audience segments so messages can be tailored. Use analytics tools and social listening to gather deeper insights.</p>\n                    <p>Always test different approaches with A/B experiments. Try variations of headlines, messages, and ad formats to see which performs best. Accurate analysis ensures investment stays focused on winning tactics.</p>\n                    <p>Segment audiences by demographics, psychographics, behaviour, or interests. The more specific the segment, the more targeted the messaging. Data from analytics tools, surveys, and social interactions enrich understanding.</p>\n                    <p>Engaging directly with your audience also reveals valuable insight. Respond to comments and messages, ask questions in stories or posts, and run quick polls to uncover preferences. These inputs shape more personal and effective communication.</p>',
+            'article3.content': '<h2>A Meaningful Digital Presence Starts with the Right Strategy</h2>\n                    <p>Building a digital presence is more than posting regularly. It requires a structured plan covering platform selection, brand consistency, integration with offline campaigns, and clear measurement.</p>\n                    <p>A meaningful presence prioritises content quality, authenticity, and two-way engagement with your audience. Everything should be planned with clear objectives and success indicators.</p>\n                    <p>A strong presence also depends on synergy between online and offline channels. Ensure brand messages stay consistent across social media and community events. With a holistic approach you deliver cohesive experiences and strengthen loyalty.</p>\n                    <p>Start by defining your primary goals. Are you aiming for brand awareness, sales growth, community building, or thought leadership? Clear objectives help determine platforms, content types, and the right metrics.</p>\n                    <p>Integrate offline and online strategies. Your digital activity should support product launches, events, or promotions. Consistent messaging keeps your brand memorable and trustworthy.</p>',
+            'faq.heading': 'Frequently Asked Questions (FAQ)',
+            'faq.q1.question': 'How do I start working with TSL?',
+            'faq.q1.answer': 'You can reach us via the contact form in the Contact section or through WhatsApp. We will schedule a meeting to discuss your business needs and provide a tailored strategy proposal.',
+            'faq.q2.question': 'Which industries has TSL served?',
+            'faq.q2.answer': 'TSL has worked across industries such as FMCG, technology, education, healthcare, real estate and more. Each strategy is customised to the unique characteristics of the industry.',
+            'faq.q3.question': 'Does TSL provide offline services?',
+            'faq.q3.answer': 'Yes. In addition to digital services, we also provide branding activations, press releases, event marketing and other offline services integrated with our online strategies.',
+            'faq.q4.question': 'How long does a typical project take?',
+            'faq.q4.answer': 'The timeline varies depending on the scope and objectives. Small campaigns may run for a few weeks, while comprehensive branding and digital transformation projects can take several months. We always outline a detailed timeline during our proposal stage.',
+            'faq.q5.question': 'What differentiates TSL from other agencies?',
+            'faq.q5.answer': 'TSL offers a 360° integrated approach that combines online and offline strategies tailored to your brand. Our team covers e-commerce management, design, media production, social media, SEO/SEM and event activations under one roof, ensuring cohesion and consistency.',
+            'faq.q6.question': 'How much do your services cost?',
+            'faq.q6.answer': 'Pricing depends on the services you require and the complexity of the project. After an initial consultation to understand your needs, we provide a customised proposal outlining the recommended services and associated costs.',
+            'faq.q7.question': 'Can TSL handle cross-border campaigns?',
+            'faq.q7.answer': 'Yes. Our experience includes running regional and international campaigns. We adapt messaging to local cultures and regulations while maintaining your brand’s core identity, ensuring consistent and compliant communication across markets.',
+            'faq.q8.question': 'How do you measure campaign success?',
+            'faq.q8.answer': 'We define KPIs with you at the outset, such as reach, engagement, leads generated, conversion rate, and return on ad spend. Through regular reporting and data dashboards, we track progress and adjust tactics to achieve agreed objectives.',
+            'faq.q9.question': 'Do you work with small businesses and startups?',
+            'faq.q9.answer': 'Absolutely. We tailor our services to match your scale and budget, whether you’re a startup seeking brand awareness or an SME looking to scale. Our modular approach allows you to choose only the services you need.',
+            'about.heading': 'About Us',
+            'about.intro': 'TSL is a 360° marketing agency that goes beyond digital. We manage e-commerce, social media, SEO/SEM, and offline strategies such as branding activations, press releases and event marketing. Our mission is to keep your brand relevant across all touchpoints.',
+            'about.teamHeading': 'Our Team',
+            'about.teamCaption': 'Vanessa (Founder & CEO), Dian (Content Creator), Agam (Content Manager), Rizky (Human Resources), Febri (Project Manager), Rifqy (AI Specialist), Qoffal (Sales Manager), Deva (Content Creator), Reza (Marketing Specialist), Sopian (SEO/SEM Manager), plus hosts, live streamers and more.',
+            'contact.heading': 'Contact Us',
+            'contact.description': 'Reach out through the channels below. We will respond promptly to your inquiry.',
+            'contact.officeHeading': 'Visit Our Office',
+            'contact.officeHours': 'Operational hours: Monday – Friday, 09.00 – 18.00 WIB.',
+            'contact.directHeading': 'Direct Channels',
+            'contact.phoneLabel': 'Phone / WhatsApp',
+            'contact.emailLabel': 'Email',
+            'contact.socialHeading': 'Stay Connected',
+            'contact.socialCopy': 'Follow us for the latest service updates and campaigns.',
+            'contact.emailCta': 'Email Us',
+            'contact.whatsappCta': 'Chat on WhatsApp',
+            'footer.copy': '© 2025 The Social Linked. All rights reserved.'
+            },
+            id: {
+            'nav.home': 'Beranda',
+            'nav.services': 'Layanan',
+            'nav.partners': 'Mitra',
+            'nav.articles': 'Artikel',
+            'nav.faq': 'FAQ',
+            'nav.about': 'Tentang',
+            'nav.contact': 'Kontak',
+            'hero.title': 'TINGKATKAN BISNIS ANDA',
+            'hero.subtitle': 'Kami Menyediakan Layanan Pemasaran Terintegrasi 360°',
+            'hero.cta': 'Hubungi Kami',
+            'services.heading': 'Layanan Kami',
+            'services.description': 'TSL menawarkan beragam layanan untuk membantu bisnis Anda berkembang. Klik setiap kartu untuk mengetahui detailnya.',
+            'services.digital.title': 'Pemasaran Digital',
+            'services.digital.copy': 'Strategi pemasaran online terintegrasi termasuk periklanan, email, dan analitik.',
+            'services.visual.title': 'Desain Visual',
+            'services.visual.copy': 'Identitas visual, desain UI/UX, ilustrasi dan animasi untuk brand Anda.',
+            'services.social.title': 'Manajemen Media Sosial',
+            'services.social.copy': 'Kembangkan komunitas Anda dan optimalkan platform sosial.',
+            'services.seo.title': 'SEO / SEM',
+            'services.seo.copy': 'Tingkatkan visibilitas mesin pencari melalui SEO dan iklan PPC.',
+            'detail.digital': '<h2>Digital Marketing</h2>\n                    <p>TSL menyediakan layanan pemasaran digital terintegrasi, menggabungkan\n                        iklan berbayar (PPC), pemasaran email, kampanye media sosial,\n                        marketing automation dan analitik. Kami memahami bahwa\n                        setiap bisnis memiliki kebutuhan unik, sehingga strategi\n                        digital kami disesuaikan untuk mencapai tujuan spesifik\n                        klien.</p>\n                    <h3>Iklan Berbayar (PPC)</h3>\n                    <p>Kami mengelola kampanye di Google Ads, Meta Ads, TikTok Ads dan platform\n                        lainnya, memastikan setiap rupiah terpakai secara efisien. Riset\n                        kata kunci, segmentasi audiens, optimisasi landing page dan\n                        pemantauan konversi adalah bagian dari proses kami.</p>\n                    <h3>Pemasaran Email</h3>\n                    <p>Pemasaran email membantu mempertahankan hubungan dengan pelanggan. Kami\n                        membuat newsletter yang relevan, email otomatisasi untuk nurturing\n                        leads, serta email promosi yang dikemas dengan desain menarik.\n                        Platform yang kami gunakan mencakup Mailchimp, Klaviyo dan\n                        sistem email khusus sesuai kebutuhan klien.</p>\n                    <h3>Marketing Automation &amp; Analitik</h3>\n                    <p>Kami memanfaatkan tools seperti HubSpot dan GA4 untuk\n                        marketing automation, memicu tindakan berdasarkan perilaku\n                        pengguna. Dengan analitik real‑time, klien dapat melihat\n                        performa kampanye secara transparan.</p>\n                    <p>Selain itu, kami menekankan integrasi lintas channel. Kampanye\n                        digital yang sukses tidak berdiri sendiri; iklan PPC,\n                        email marketing, social media dan SEO harus saling\n                        mendukung untuk membangun ekosistem pemasaran yang kuat.\n                        Kami membantu menghubungkan setiap titik sehingga\n                        prospek dapat berpindah dari satu touchpoint ke touchpoint\n                        lain tanpa hambatan, meningkatkan peluang konversi.</p>\n                    <p>Personalization dan pengujian berkelanjutan juga merupakan\n                        bagian inti dari layanan kami. Dengan A/B testing\n                        terhadap copy, kreatif, CTA dan landing page, kami\n                        memvalidasi hipotesis untuk menemukan pendekatan yang\n                        paling efektif. Data yang diperoleh tidak hanya\n                        meningkatkan performa kampanye saat ini, tetapi juga\n                        menjadi referensi untuk strategi jangka panjang.</p>\n                    <p>Retargeting memainkan peran penting dalam mendorong konversi.\n                        Dengan memanfaatkan pixel tracking, kami membangun\n                        audiens khusus yang telah berinteraksi dengan brand Anda\n                        dan menayangkan iklan yang relevan untuk mendorong\n                        pembelian. Funnel konversi disusun agar prospek\n                        melewati awareness, consideration, hingga decision\n                        dengan mulus.</p>\n                    <p>Integrasi CRM dengan kampanye digital memungkinkan kami\n                        menghubungkan data pelanggan dari berbagai kanal untuk\n                        menciptakan segmentasi yang lebih tajam. Ini membantu\n                        dalam menyusun pesan yang dipersonalisasi, memaksimalkan\n                        lifetime value pelanggan dan meningkatkan loyalitas.</p>',
+            'detail.visual': '<h2>Visual Design</h2>\n                    <p>Visual yang kuat membantu brand menonjol di pasar yang padat. Dari\n                        pembuatan logo hingga panduan identitas lengkap, tim kami\n                        bekerja sama dengan klien untuk mengekspresikan kepribadian\n                        brand secara konsisten. Layanan kami mencakup desain UI/UX,\n                        ilustrasi, fotografi, dan produksi video.</p>\n                    <h3>Identitas Brand</h3>\n                    <p>Kami menggali esensi brand untuk menciptakan logo, palet warna,\n                        tipografi, dan gaya visual yang unik. Panduan brand yang kami\n                        susun memudahkan implementasi identitas pada berbagai media.\n                    </p>\n                    <h3>UI/UX Design</h3>\n                    <p>Pengalaman pengguna yang baik meningkatkan kepuasan dan konversi.\n                        Kami merancang antarmuka digital yang intuitif, responsif dan\n                        estetis untuk aplikasi web maupun mobile.</p>\n                    <h3>Ilustrasi &amp; Motion Graphics</h3>\n                    <p>Ilustrasi kustom dan animasi membantu menyampaikan pesan secara\n                        efektif. Kami membuat aset visual yang mendukung cerita\n                        brand dalam video, infografik dan sosial media.</p>\n                    <p>Setiap proyek desain dimulai dengan riset mendalam. Kami\n                        mempelajari target audiens dan konteks bisnis untuk\n                        menghasilkan konsep yang relevan. Wireframe, mood\n                        board dan prototyping digunakan untuk memvalidasi\n                        ide sebelum masuk ke tahap finalisasi. Pendekatan ini\n                        memastikan bahwa setiap elemen visual bukan hanya\n                        indah, tetapi juga fungsional.</p>\n                    <p>Consistency adalah kunci. Visual identity harus konsisten\n                        di semua platform, baik digital maupun cetak. Tim kami\n                        memastikan bahwa palet warna, tipografi, ikonografi\n                        dan gaya ilustrasi diterapkan secara seragam, sehingga\n                        brand Anda mudah dikenali dan membangun kepercayaan\n                        jangka panjang dengan audiens.</p>\n                    <p>Kami juga mengerjakan desain kemasan dan materi cetak\n                        seperti brosur, katalog, signage dan point‑of‑sale.\n                        Desain ini memastikan pengalaman visual yang terpadu\n                        ketika produk Anda berada di rak, di tangan konsumen\n                        atau dipamerkan dalam acara.</p>\n                    <p>Documentasi desain berupa brand guidelines penting untuk\n                        menjaga konsistensi jangka panjang. Kami membuat\n                        panduan komprehensif yang mencakup aturan penggunaan\n                        logo, warna, tipografi, fotografi, iconography, serta\n                        contoh aplikasi. Panduan ini memudahkan tim internal\n                        atau vendor eksternal untuk menerapkan identitas\n                        brand dengan benar.</p>',
+            'detail.social': '<h2>Social Media Management</h2>\n                    <p>Kehadiran di media sosial adalah bagian penting dari strategi\n                        pemasaran modern. Kami membantu brand membangun dan\n                        mempertahankan komunitas online dengan pendekatan yang\n                        autentik dan terencana. Platform yang kami kelola mencakup\n                        Instagram, Facebook, LinkedIn, TikTok dan lainnya.</p>\n                    <h3>Strategi Konten</h3>\n                    <p>Kami menyusun kalender konten yang seimbang antara edukasi,\n                        hiburan dan promosi. Konten disesuaikan dengan kebutuhan\n                        audiens dan tren terkini.</p>\n                    <h3>Komunitas &amp; Moderasi</h3>\n                    <p>Interaksi dua arah sangat penting. Tim kami merespon komentar,\n                        pesan langsung dan mengelola komunitas untuk menjaga reputasi\n                        brand.</p>\n                    <h3>Kampanye Influencer</h3>\n                    <p>Kolaborasi dengan influencer yang sesuai meningkatkan jangkauan\n                        dan kredibilitas. Kami mengidentifikasi, mengelola dan\n                        mengevaluasi kampanye influencer dari awal hingga akhir.</p>\n                    <p>Analitik memegang peran penting dalam manajemen media sosial.\n                        Kami memantau metrik seperti engagement rate, reach,\n                        sentiment dan follower growth untuk mengevaluasi\n                        efektivitas strategi. Insight yang diperoleh menjadi\n                        dasar optimasi konten di masa mendatang.</p>\n                    <p>Pemasaran berbayar di media sosial (paid social) juga termasuk\n                        dalam layanan kami. Melalui penargetan yang tepat,\n                        retargeting dan penggunaan lookalike audience, kami\n                        membantu klien memperluas jangkauan secara efisien\n                        sambil menjaga ROI yang positif.</p>\n                    <p>Kami memahami pentingnya manajemen krisis di media sosial.\n                        Reputasi brand dapat berubah dengan cepat ketika\n                        menghadapi ulasan negatif atau isu publik. Tim kami\n                        dilatih untuk merespons secara cepat dan empatik,\n                        menjaga komunikasi transparan dan memulihkan kepercayaan\n                        audiens.</p>\n                    <p>Memonitor tren dan perkembangan di setiap platform\n                        memungkinkan kami menciptakan konten yang relevan dengan\n                        budaya populer. Dari format video pendek hingga live\n                        streaming, kami menyesuaikan konten agar memanfaatkan\n                        algoritma terbaru dan preferensi pengguna. Setiap\n                        kampanye dirancang untuk memicu interaksi dan\n                        percakapan.</p>',
+            'detail.seo': '<h2>SEO / SEM</h2>\n                    <p>Optimasi mesin pencari dan pemasaran mesin pencari membantu\n                        brand Anda ditemukan oleh calon pelanggan. Kami\n                        menyediakan solusi SEO menyeluruh mulai dari riset kata\n                        kunci, optimasi on‑page, link building hingga teknis SEO.\n                        Untuk SEM, kami mengelola kampanye iklan berbayar\n                        (Google Ads, Bing Ads, dsb.) yang terukur dan efisien.</p>\n                    <h3>Riset &amp; Strategi Kata Kunci</h3>\n                    <p>Kami menganalisis kata kunci berdasarkan volume pencarian,\n                        persaingan dan relevansi untuk menentukan peluang terbaik.\n                        Strategi konten kemudian diselaraskan dengan temuan ini.</p>\n                    <h3>Optimasi On‑Page &amp; Teknis</h3>\n                    <p>Memastikan struktur situs, metadata, kecepatan, dan\n                        pengalaman pengguna sesuai dengan best practice Google\n                        adalah prioritas kami. Kami melakukan audit teknis dan\n                        rekomendasi perbaikan.</p>\n                    <h3>PPC &amp; CRO</h3>\n                    <p>Kampanye SEM terukur berjalan berdampingan dengan optimasi\n                        konversi (Conversion Rate Optimization) agar trafik yang\n                        datang menghasilkan nilai. Ini termasuk A/B testing,\n                        optimasi landing page dan analisis heat map.</p>\n                    <p>Optimasi lokal adalah elemen penting bagi bisnis yang\n                        menargetkan pelanggan di area tertentu. Kami\n                        mengoptimalkan listing Google Business Profile,\n                        menciptakan konten lokal dan membangun tautan dari\n                        direktori regional untuk meningkatkan visibilitas\n                        lokal.</p>\n                    <p>SEO teknis mencakup peningkatan kecepatan situs,\n                        struktur data terstruktur, keamanan HTTPS, dan\n                        mobile‑friendliness. Kami melakukan audit berkala\n                        untuk memastikan situs memenuhi standar terbaru\n                        Google sehingga dapat meraih peringkat yang lebih\n                        tinggi secara organik.</p>\n                    <p>Algoritma mesin pencari terus berevolusi. Kami mengikuti\n                        perkembangan seperti Google Core Updates, perubahan\n                        dalam interpretasi intent pencarian, dan sinyal baru\n                        seperti user experience. Dengan menyesuaikan strategi\n                        konten dan teknis sesuai update, kami memastikan\n                        situs klien tetap kompetitif dan tidak terkena\n                        penalti.</p>\n                    <p>Pengukuran dan pelaporan adalah bagian integral dari\n                        layanan SEO/SEM kami. Kami menyediakan dashboard\n                        terintegrasi yang menampilkan metrik utama seperti\n                        impressions, CTR, average position, bounce rate,\n                        conversion rate dan ROI. Data ini membantu klien\n                        memahami nilai setiap aktivitas dan menentukan\n                        langkah selanjutnya.</p>',
+            'partners.heading': 'Mitra Kami',
+            'partners.description': 'Kami bekerja sama dengan banyak brand untuk memaksimalkan kesuksesan klien. Berikut logo resmi para mitra TSL yang kami tampilkan tanpa modifikasi.',
+            'articles.heading': 'Artikel',
+            'articles.description': 'Baca analisis dan panduan mendalam dari tim TSL untuk memajukan strategi pemasaran Anda.',
+            'articles.card1.title': 'Konten Maksimal, Performa Rendah?',
+            'articles.card1.copy': 'Mengapa konten yang sudah maksimal belum tentu berhasil.',
+            'articles.card2.title': 'Pentingnya Memahami Audiens',
+            'articles.card2.copy': 'Kenali audiens Anda sebelum memulai strategi digital.',
+            'articles.card3.title': 'Kehadiran Digital Bermakna',
+            'articles.card3.copy': 'Strategi membangun kehadiran digital yang efektif.',
+            'article1.content': '<h2>Konten Sudah Maksimal, Performa Masih Rendah?</h2>\n                    <p>Artikel ini membahas mengapa konten yang telah dibuat dengan penuh usaha\n                        bisa saja tidak menghasilkan performa yang diharapkan. Faktor\n                        seperti algoritma, relevansi dengan audiens, waktu\n                        publikasi, dan konsistensi dapat berpengaruh besar.\n                        Selain itu, diperlukan pemahaman yang baik tentang data\n                        analitik untuk terus memperbaiki konten.</p>\n                    <p>Beberapa langkah yang dapat dilakukan untuk mengoptimalkan performa\n                        konten termasuk melakukan riset tren, menggunakan visual\n                        yang menarik, menulis caption yang mengajak audiens\n                        berdiskusi, serta menguji berbagai format (video,\n                        carousel, live streaming). Jangan lupa untuk mengevaluasi\n                        setiap hasil dan belajar dari konten yang sukses.\n                    </p>\n                    <p>Selain menyesuaikan format, penting juga untuk memahami algoritma platform yang terus berubah. Engaging dengan audiens melalui komentar, mengadakan sesi Q&amp;A atau live streaming, serta mengoptimalkan penggunaan hashtag membantu konten Anda ditemukan. Jangan lupa untuk selalu mendorong tindakan dengan call&nbsp;to&nbsp;action (CTA) yang jelas dan relevan.</p>\n                    <p>Data analitik adalah teman terbaik Anda. Dengan memeriksa\n                        metrik seperti view, klik, watch time, share dan\n                        komentar, Anda dapat memahami bagaimana audiens\n                        berinteraksi dengan konten. Pelajari pola dan waktu\n                        posting yang menghasilkan performa terbaik, lalu\n                        iterasikan strategi Anda.</p>\n                    <p>Kustomisasi untuk setiap platform juga penting. Konten yang\n                        sukses di Instagram belum tentu berhasil di LinkedIn\n                        atau TikTok. Sesuaikan format, durasi dan gaya\n                        komunikasi dengan karakteristik audiens di setiap\n                        platform untuk memaksimalkan jangkauan dan keterlibatan.</p>',
+            'article2.content': '<h2>Seberapa Penting Memahami Audiens dalam Strategi Digital Marketing?</h2>\n                    <p>Memahami audiens adalah fondasi strategi digital marketing yang\n                        efektif. Dengan mengetahui siapa audiens Anda, kebutuhan\n                        mereka, serta perilaku mereka di dunia digital, Anda\n                        dapat membuat konten yang relevan dan resonan.</p>\n                    <p>Persona adalah salah satu alat untuk memahami audiens. Dengan\n                        membuat persona yang mewakili segmen audiens berbeda,\n                        Anda dapat menyesuaikan pesan. Selain itu, jangan\n                        lupa memanfaatkan alat analitik dan social listening\n                        untuk mendapatkan wawasan lebih dalam.</p>\n                    <p>Pastikan juga untuk menguji berbagai pendekatan melalui A/B testing. Cobalah variasi judul, isi pesan, dan format iklan untuk melihat mana yang paling efektif. Analisis yang tepat akan membantu Anda memfokuskan anggaran pada strategi yang memberi hasil terbaik.</p>\n                    <p>Segmentasi audiens bisa dilakukan berdasarkan demografi,\n                        psikografi, perilaku atau minat. Semakin spesifik\n                        segmentasi Anda, semakin tepat sasaran pesan yang\n                        disampaikan. Gunakan data dari analytics tools,\n                        survei maupun interaksi di media sosial untuk\n                        memperkaya pemahaman Anda.</p>\n                    <p>Interaksi dengan audiens juga merupakan sumber insight.\n                        Tanggapi komentar dan pesan, ajukan pertanyaan\n                        dalam story atau postingan, dan lakukan polling\n                        sederhana untuk mengetahui preferensi mereka.\n                        Semua masukan ini membantu membentuk strategi\n                        komunikasi yang lebih personal dan efektif.</p>',
+            'article3.content': '<h2>Kehadiran Digital yang Bermakna Dimulai dari Strategi yang Tepat</h2>\n                    <p>Membangun kehadiran digital bukan sekedar memposting secara rutin.\n                        Diperlukan strategi yang terstruktur mulai dari pemilihan\n                        platform, konsistensi brand, integrasi dengan\n                        kampanye offline, hingga pengukuran efektifitas.</p>\n                    <p>Merancang kehadiran digital yang bermakna juga berarti\n                        mengutamakan kualitas konten, keautentikan, serta\n                        interaksi dua arah dengan audiens. Kesemuanya harus\n                        direncanakan dengan tujuan dan indikator keberhasilan\n                        yang jelas.</p>\n                    <p>Kehadiran yang kuat juga membutuhkan sinergi antara saluran online dan offline. Pastikan pesan brand konsisten di semua touchpoint, dari media sosial hingga acara komunitas. Dengan pendekatan holistik, Anda akan menciptakan pengalaman yang kohesif dan meningkatkan loyalitas pelanggan.</p>\n                    <p>Identifikasi tujuan utama Anda. Apakah Anda ingin\n                        meningkatkan brand awareness, mendorong penjualan,\n                        memperkuat komunitas atau posisi thought leadership?\n                        Tujuan yang jelas membantu Anda menentukan platform,\n                        jenis konten dan metrik keberhasilan yang tepat.</p>\n                    <p>Integrasikan strategi offline dan online. Kehadiran digital\n                        yang kuat sebaiknya mendukung aktivitas offline,\n                        seperti peluncuran produk, event atau promosi.\n                        Pastikan pesan yang disampaikan konsisten agar\n                        brand Anda mudah diingat dan dipercaya oleh audiens.</p>',
+            'faq.heading': 'Pertanyaan yang Sering Diajukan (FAQ)',
+            'faq.q1.question': 'Bagaimana cara mulai bekerja dengan TSL?',
+            'faq.q1.answer': 'Hubungi kami melalui formulir di halaman Kontak atau lewat WhatsApp. Kami akan menjadwalkan pertemuan untuk membahas kebutuhan bisnis Anda dan menyiapkan proposal strategi yang sesuai.',
+            'faq.q2.question': 'Industri apa saja yang pernah ditangani TSL?',
+            'faq.q2.answer': 'TSL berpengalaman di berbagai industri seperti FMCG, teknologi, pendidikan, kesehatan, properti dan lainnya. Setiap strategi disesuaikan dengan karakteristik industri tersebut.',
+            'faq.q3.question': 'Apakah TSL menyediakan layanan offline?',
+            'faq.q3.answer': 'Ya. Selain layanan digital, kami juga menangani branding activation, press release, pemasaran event dan layanan offline lain yang terintegrasi dengan strategi online.',
+            'faq.q4.question': 'Berapa lama durasi proyek biasanya?',
+            'faq.q4.answer': 'Durasi bergantung pada cakupan dan tujuan. Kampanye kecil dapat berjalan beberapa minggu, sedangkan proyek branding dan transformasi digital menyeluruh bisa berlangsung beberapa bulan. Timeline detail dijelaskan pada tahap proposal.',
+            'faq.q5.question': 'Apa yang membedakan TSL dari agensi lain?',
+            'faq.q5.answer': 'TSL menawarkan pendekatan terintegrasi 360° yang memadukan strategi online dan offline sesuai kebutuhan brand. Tim kami mencakup manajemen e-commerce, desain, produksi media, media sosial, SEO/SEM, hingga aktivasi event dalam satu atap.',
+            'faq.q6.question': 'Berapa biaya layanan TSL?',
+            'faq.q6.answer': 'Biaya ditentukan oleh layanan yang dibutuhkan dan tingkat kompleksitas proyek. Setelah konsultasi awal, kami menyiapkan proposal khusus yang memuat rekomendasi layanan dan estimasi biaya.',
+            'faq.q7.question': 'Bisakah TSL menangani kampanye lintas negara?',
+            'faq.q7.answer': 'Bisa. Kami memiliki pengalaman menjalankan kampanye regional dan internasional. Pesan disesuaikan dengan budaya dan regulasi lokal tanpa menghilangkan identitas utama brand, sehingga komunikasi tetap konsisten dan patuh aturan.',
+            'faq.q8.question': 'Bagaimana TSL mengukur keberhasilan kampanye?',
+            'faq.q8.answer': 'Sejak awal kami menyepakati KPI seperti jangkauan, engagement, leads, conversion rate, dan return on ad spend. Melalui laporan rutin dan dashboard data, kami memantau progres lalu menyesuaikan taktik agar target tercapai.',
+            'faq.q9.question': 'Apakah TSL bekerja dengan UMKM dan startup?',
+            'faq.q9.answer': 'Tentu. Layanan kami dapat disesuaikan dengan skala dan anggaran Anda, baik untuk startup yang ingin membangun awareness maupun UKM yang ingin bertumbuh. Pendekatan modular memungkinkan Anda memilih layanan yang dibutuhkan saja.',
+            'about.heading': 'Tentang Kami',
+            'about.intro': 'TSL adalah agensi pemasaran 360° yang melampaui kanal digital. Kami mengelola e-commerce, media sosial, SEO/SEM, serta strategi offline seperti aktivasi branding, press release, dan pemasaran event. Misi kami adalah menjaga relevansi brand Anda di setiap touchpoint.',
+            'about.teamHeading': 'Tim Kami',
+            'about.teamCaption': 'Vanessa (Pendiri & CEO), Dian (Content Creator), Agam (Content Manager), Rizky (Human Resources), Febri (Project Manager), Rifqy (AI Specialist), Qoffal (Sales Manager), Deva (Content Creator), Reza (Marketing Specialist), Sopian (SEO/SEM Manager), serta host live streamer dan anggota lainnya.',
+            'contact.heading': 'Hubungi Kami',
+            'contact.description': 'Silakan hubungi kami melalui kanal di bawah ini. Kami akan merespons permintaan Anda secepatnya.',
+            'contact.officeHeading': 'Kunjungi Kantor Kami',
+            'contact.officeHours': 'Jam operasional: Senin – Jumat, 09.00 – 18.00 WIB.',
+            'contact.directHeading': 'Kanal Langsung',
+            'contact.phoneLabel': 'Telepon / WhatsApp',
+            'contact.emailLabel': 'Email',
+            'contact.socialHeading': 'Tetap Terhubung',
+            'contact.socialCopy': 'Ikuti kami untuk pembaruan layanan dan kampanye terbaru.',
+            'contact.emailCta': 'Kirim Email',
+            'contact.whatsappCta': 'Chat via WhatsApp',
+            'footer.copy': '© 2025 The Social Linked. Hak cipta dilindungi.'
+            }
+        };
+
+        let currentLanguage = 'en';
+
+        function applyLanguage(lang) {
+            const dict = translations[lang] || translations.en;
+            document.documentElement.lang = lang === 'id' ? 'id' : 'en';
+            body.setAttribute('data-language', lang);
+            if (languageSwitch) {
+                languageSwitch.setAttribute('data-language', lang);
+                const label = lang === 'en' ? 'Switch to Indonesian' : 'Switch to English';
+                languageSwitch.setAttribute('aria-label', label);
+                languageSwitch.title = label;
+            }
+            document.querySelectorAll('[data-i18n]').forEach((el) => {
+                const key = el.getAttribute('data-i18n');
+                const value = dict[key] ?? translations.en[key];
+                if (value !== undefined) {
+                    el.innerHTML = value;
+                }
+            });
+            document.querySelectorAll('[data-i18n-html]').forEach((el) => {
+                const key = el.getAttribute('data-i18n-html');
+                const value = dict[key] ?? translations.en[key];
+                if (value !== undefined) {
+                    el.innerHTML = value;
+                }
+            });
+        }
+
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            try {
+                localStorage.setItem('tsl-language', lang);
+            } catch (err) {
+                /* ignore storage errors */
+            }
+            applyLanguage(lang);
+        }
+
         function showSection(id) {
-            sections.forEach(sec => {
+            sections.forEach((sec) => {
                 sec.classList.toggle('active', sec.id === id);
             });
-            navLinks.forEach(link => {
+            navLinks.forEach((link) => {
                 link.classList.toggle('active', link.getAttribute('data-link') === id);
             });
         }
-        // Bind all elements with a data-link attribute to show their target section.
-        linkElements.forEach(el => {
-            el.addEventListener('click', event => {
+
+        linkElements.forEach((el) => {
+            el.addEventListener('click', (event) => {
                 event.preventDefault();
                 const target = el.getAttribute('data-link');
                 showSection(target);
             });
         });
-        // Theme switching
-        themeSwitch.addEventListener('click', () => {
-            const current = body.getAttribute('data-theme');
-            const next = current === 'dark' ? 'light' : 'dark';
-            body.setAttribute('data-theme', next);
-            themeSwitch.classList.toggle('active', next === 'light');
-        });
-        // Accordion behaviour
+
+        if (themeSwitch) {
+            themeSwitch.addEventListener('click', () => {
+                const current = body.getAttribute('data-theme') || 'dark';
+                const next = current === 'dark' ? 'light' : 'dark';
+                body.setAttribute('data-theme', next);
+                themeSwitch.classList.toggle('active', next === 'light');
+            });
+            themeSwitch.classList.toggle('active', body.getAttribute('data-theme') === 'light');
+        }
+
+        if (languageSwitch) {
+            languageSwitch.addEventListener('click', () => {
+                const next = currentLanguage === 'en' ? 'id' : 'en';
+                setLanguage(next);
+            });
+        }
+
         const accordionItems = document.querySelectorAll('.accordion-item');
-        accordionItems.forEach(item => {
+        accordionItems.forEach((item) => {
             item.addEventListener('click', () => {
                 item.classList.toggle('open');
             });
         });
+
+        let storedLanguage = 'en';
+        try {
+            storedLanguage = localStorage.getItem('tsl-language') || 'en';
+        } catch (err) {
+            storedLanguage = 'en';
+        }
+        if (!translations[storedLanguage]) {
+            storedLanguage = 'en';
+        }
+        setLanguage(storedLanguage);
     })();
     </script>
 </body>
