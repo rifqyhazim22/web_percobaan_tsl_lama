@@ -54,6 +54,8 @@
             --light-text: #111111;
             --light-muted: #666666;
             --light-accent: #b48a18;
+            --light-overlay-strong: rgba(255, 255, 255, 0.85);
+            --light-overlay-soft: rgba(255, 239, 205, 0.45);
             /* Shared values */
             --border-radius: 12px;
             --transition-duration: 0.3s;
@@ -253,7 +255,7 @@
         }
 
         body[data-theme="light"] .section .overlay {
-            background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9));
+            background: linear-gradient(var(--light-overlay-strong) 0%, var(--light-overlay-soft) 60%, rgba(255, 236, 170, 0.3) 100%);
         }
 
         /* Utility classes for spacing */
@@ -319,7 +321,7 @@
         }
 
         body[data-theme="light"] #home .overlay {
-            background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9));
+            background: linear-gradient(var(--light-overlay-strong) 0%, var(--light-overlay-soft) 60%, rgba(255, 236, 170, 0.3) 100%);
         }
 
         #home .hero {
