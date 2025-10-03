@@ -18,6 +18,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const sgMail = require('@sendgrid/mail');
 
 // Port on which the server will listen.  It can be configured via the
 // PORT environment variable; otherwise it defaults to 3000.
@@ -27,6 +28,17 @@ const PORT = process.env.PORT || 3000;
 // is appended as a JSON object within an array.  This file is created if
 // it does not already exist.
 const DEFAULT_CONTACTS_FILE = path.join(__dirname, 'contacts.json');
+const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY || '';
+const SENDGRID_TO_EMAIL = process.env.SENDGRID_TO_EMAIL || 'project@thesociallinked.co.id';
+const SENDGRID_FROM_EMAIL = process.env.SENDGRID_FROM_EMAIL || SENDGRID_TO_EMAIL;
+
+if (SENDGRID_API_KEY) {
+  try {
+    sgMail.setApiKey(SENDGRID_API_KEY);
+  } catch (err) {
+    console.error('Failed to initialise SendGrid client:', err);
+  }
+}
 
 /**
  * Resolve the path used to store contact submissions. Allows overriding
@@ -64,6 +76,15 @@ function ensureContactsFile() {
       throw writeErr;
     }
   }
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 /**
@@ -163,6 +184,34 @@ function handleContactSubmission(req, res) {
         timestamp: new Date().toISOString()
       });
       fs.writeFileSync(contactsFilePath, JSON.stringify(contacts, null, 2), 'utf8');
+
+      if (SENDGRID_API_KEY) {
+        const safeName = escapeHtml(data.name);
+        const safeEmail = escapeHtml(data.email);
+        const safeSubject = escapeHtml(data.subject);
+        const safeMessage = escapeHtml(data.message).replace(/\n/g, '<br>');
+
+        const emailPayload = {
+          to: SENDGRID_TO_EMAIL,
+          from: SENDGRID_FROM_EMAIL,
+          subject: `[TSL Contact] ${data.subject || 'New inquiry'}`,
+          text: `Name: ${data.name}\nEmail: ${data.email}\nSubject: ${data.subject}\nMessage: ${data.message}`,
+          html: `
+            <p><strong>Name:</strong> ${safeName}</p>
+            <p><strong>Email:</strong> ${safeEmail}</p>
+            <p><strong>Subject:</strong> ${safeSubject}</p>
+            <p><strong>Message:</strong></p>
+            <p>${safeMessage}</p>
+          `
+        };
+
+        sgMail
+          .send(emailPayload)
+          .catch(err => {
+            console.error('SendGrid email failed:', err);
+          });
+      }
+
       // Respond with success.
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ status: 'success', message: 'Thank you for contacting us!' }));
