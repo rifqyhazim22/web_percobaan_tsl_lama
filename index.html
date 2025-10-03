@@ -254,6 +254,9 @@
 
         .language-switch span {
             flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
             z-index: 1;
             transition: color var(--transition-duration), opacity var(--transition-duration);
@@ -287,11 +290,15 @@
         .language-switch[data-language="id"] span:last-child {
             color: var(--dark-bg);
             opacity: 1;
+            font-weight: 700;
+            letter-spacing: 0.03em;
         }
 
         .language-switch[data-language="en"] span:last-child,
         .language-switch[data-language="id"] span:first-child {
             opacity: 0.55;
+            font-weight: 600;
+            letter-spacing: 0.02em;
         }
 
         body[data-theme="light"] .language-switch[data-language="en"] span:first-child,
