@@ -109,30 +109,16 @@
         }
 
         body[data-theme="light"] header {
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(255, 255, 255, 0.9);
         }
 
         .logo {
-            /* Increase logo size for better brand visibility.  The logo
-               fills the header height and uses a wider rectangle to
-               emphasise the brand.  object-fit: contain keeps the
-               aspect ratio while object-position left ensures the text
-               portion of the logo remains visible. */
             height: calc(var(--nav-height) - 20px);
-            /* Make the logo wider to better fill the header and give a
-               more rectangular appearance. */
             width: 320px;
             object-fit: contain;
             object-position: left center;
+            filter: none;
             transition: filter var(--transition-duration);
-        }
-
-        body[data-theme="dark"] .logo {
-            filter: invert(0%) sepia(0%) saturate(100%) hue-rotate(0deg);
-        }
-
-        body[data-theme="light"] .logo {
-            filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg);
         }
 
         nav {
@@ -911,7 +897,7 @@
     <!-- Navigation bar -->
     <header>
         <a href="#" data-link="home" class="logo-link">
-            <img class="logo" src="./tsl-logo.png" alt="TSL Logo">
+            <img class="logo" src="./tsl-logo.png" alt="The Social Linked" data-logo="true">
         </a>
         <nav>
             <!-- Navigation links translated to English.  Removed testimonial link to match the official site. -->
@@ -1905,6 +1891,7 @@
             storedLanguage = 'en';
         }
         setLanguage(storedLanguage);
+
     })();
     </script>
 </body>
