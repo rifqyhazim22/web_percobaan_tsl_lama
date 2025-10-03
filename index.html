@@ -636,83 +636,80 @@
             color: var(--light-muted);
         }
 
-        /* Contact form */
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        form input, form textarea {
-            padding: 12px;
-            border-radius: var(--border-radius);
-            border: 1px solid var(--dark-muted);
-            background: var(--dark-surface);
-            color: var(--dark-text);
-            resize: vertical;
-        }
-
-        body[data-theme="light"] form input,
-        body[data-theme="light"] form textarea {
-            background: var(--light-surface);
-            color: var(--light-text);
-            border-color: var(--light-muted);
-        }
-
-        form button {
-            background: var(--dark-accent);
-            color: var(--dark-bg);
-            padding: 12px;
-            border: none;
-            border-radius: var(--border-radius);
-            font-weight: 600;
-            cursor: pointer;
-            transition: background var(--transition-duration), transform 0.2s;
-        }
-
-        body[data-theme="light"] form button {
-            background: var(--light-accent);
-            color: var(--light-bg);
-        }
-
-        form button:hover {
-            transform: translateY(-2px);
-        }
-
-        /* Contact section layout.  Use a responsive two‑column grid on large screens
-           and stack vertically on small screens.  Contact details are aligned
-           left, while the form occupies the second column. */
-        .contact-grid {
+        /* Contact section */
+        /* Contact section uses cards instead of a form. */
+        .contact-details {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: flex-start;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+            text-align: left;
         }
-        @media (max-width: 768px) {
-            .contact-grid {
-                grid-template-columns: 1fr;
-            }
+        .contact-card {
+            padding: 24px;
+            border-radius: var(--border-radius);
+            background: rgba(20, 20, 20, 0.65);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(6px);
         }
-        .contact-info h3 {
+        .contact-card h3 {
             margin-top: 0;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
-        .contact-info p {
-            margin-bottom: 16px;
+        .contact-card p {
+            margin-bottom: 12px;
         }
-
-        /* Ensure links in the contact information adopt the accent colour rather than the
-           browser default blue.  This applies to phone/WhatsApp, email, social media
-           and address. */
-        .contact-info a {
+        .contact-card a {
             color: var(--dark-accent);
             text-decoration: none;
         }
-        body[data-theme="light"] .contact-info a {
+        .contact-card a:hover {
+            text-decoration: underline;
+        }
+        body[data-theme="light"] .contact-card {
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+        }
+        body[data-theme="light"] .contact-card a {
             color: var(--light-accent);
         }
-        .contact-info a:hover {
-            text-decoration: underline;
+        .contact-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 32px;
+        }
+        .contact-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 999px;
+            font-weight: 600;
+            color: var(--dark-bg);
+            background: var(--dark-accent);
+            text-decoration: none;
+            transition: transform 0.2s, background var(--transition-duration);
+        }
+        .contact-button:hover {
+            transform: translateY(-2px);
+        }
+        body[data-theme="light"] .contact-button {
+            color: var(--light-bg);
+            background: var(--light-accent);
+        }
+        .contact-button.secondary {
+            color: var(--dark-text);
+            background: transparent;
+            border: 1px solid var(--dark-accent);
+        }
+        body[data-theme="light"] .contact-button.secondary {
+            color: var(--light-text);
+            border-color: var(--light-accent);
+        }
+        .contact-button.secondary:hover {
+            background: rgba(212, 175, 55, 0.15);
         }
 
         /* Partner section grid and cards.  Each partner is represented with a
@@ -1475,37 +1472,42 @@
             <div class="overlay"></div>
             <div class="container text-center">
                 <h2 class="accent mb-4">Contact Us</h2>
-                <p class="mb-4">Reach out via the form below or through any of the listed channels. We will respond promptly to your inquiry.</p>
-                <div class="contact-grid">
-                    <div class="contact-info">
-                        <h3 class="accent">Office Address</h3>
-                        <!-- Make the address a link to Google Maps; break lines with <br> inside the anchor -->
+                <p class="mb-4">Reach out through the channels below. We will respond promptly to your inquiry.</p>
+                <div class="contact-details">
+                    <div class="contact-card">
+                        <h3 class="accent">Visit Our Office</h3>
                         <p>
                             <a href="https://maps.app.goo.gl/f4gb46TwAusM1wpj6" target="_blank" rel="noopener">
-                                Ruko Bolsena, Curug Sangereng, Kec. Kelapa Dua,<br>
-                                Kabupaten Tangerang, Banten 15810
+                                Ruko Bolsena, Curug Sangereng,<br>
+                                Kec. Kelapa Dua, Kabupaten Tangerang,<br>
+                                Banten 15810
                             </a>
                         </p>
-                        <h3 class="accent">Phone / WhatsApp</h3>
-                        <p><a href="https://wa.me/6281575020815" target="_blank" rel="noopener">+62 815 7502 0815</a></p>
-                        <h3 class="accent">Email</h3>
-                        <p><a href="mailto:project@thesociallinked.co.id">project@thesociallinked.co.id</a></p>
-                        <h3 class="accent">Social Media</h3>
+                        <p>Operational hours: Senin – Jumat, 09.00 – 18.00 WIB.</p>
+                    </div>
+                    <div class="contact-card">
+                        <h3 class="accent">Direct Channels</h3>
+                        <p>
+                            <strong>Phone / WhatsApp</strong><br>
+                            <a href="https://wa.me/6281575020815" target="_blank" rel="noopener">+62 815 7502 0815</a>
+                        </p>
+                        <p>
+                            <strong>Email</strong><br>
+                            <a href="mailto:project@thesociallinked.co.id">project@thesociallinked.co.id</a>
+                        </p>
+                    </div>
+                    <div class="contact-card">
+                        <h3 class="accent">Stay Connected</h3>
+                        <p>Ikuti kami untuk update layanan dan campaign terbaru.</p>
                         <p>
                             <a href="https://www.linkedin.com/company/the-social-linked/" target="_blank" rel="noopener">LinkedIn</a><br>
                             <a href="https://www.instagram.com/thesociallinked/" target="_blank" rel="noopener">Instagram</a>
                         </p>
                     </div>
-                    <div class="contact-form">
-                        <form id="contactForm">
-                            <input type="text" name="name" placeholder="Name" required>
-                            <input type="email" name="email" placeholder="Email" required>
-                            <input type="text" name="subject" placeholder="Subject" required>
-                            <textarea name="message" rows="5" placeholder="Your message" required></textarea>
-                            <button type="submit">Send Message</button>
-                        </form>
-                        <p id="formStatus" style="margin-top:10px;"></p>
-                    </div>
+                </div>
+                <div class="contact-actions">
+                    <a class="contact-button" href="mailto:project@thesociallinked.co.id">Email Us</a>
+                    <a class="contact-button secondary" href="https://wa.me/6281575020815" target="_blank" rel="noopener">Chat on WhatsApp</a>
                 </div>
             </div>
         </section>
@@ -1520,11 +1522,9 @@
     (function() {
         'use strict';
         /*
-         * This script handles navigation, theme switching, FAQ accordion,
-         * testimonials slider hint (not needed due to CSS snap) and form
-         * submission.  It communicates with the backend server when the
-         * contact form is submitted.  All variables and functions are
-         * contained within this IIFE to avoid polluting the global scope.
+         * This script handles navigation, theme switching, the FAQ accordion,
+         * and general interactive behaviour.  Contact details are now static
+         * so no client-side form submission is required.
          */
         const sections = document.querySelectorAll('.section');
         // All elements with a data-link attribute will act as navigation triggers.
@@ -1532,8 +1532,6 @@
         const navLinks = document.querySelectorAll('nav a');
         const themeSwitch = document.getElementById('themeSwitch');
         const body = document.body;
-        const form = document.getElementById('contactForm');
-        const formStatus = document.getElementById('formStatus');
 
         // Navigation / Router
         function showSection(id) {
@@ -1565,30 +1563,6 @@
             item.addEventListener('click', () => {
                 item.classList.toggle('open');
             });
-        });
-        // Contact form submission
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            formStatus.textContent = 'Sending...';
-            const data = Object.fromEntries(new FormData(form).entries());
-            try {
-                const response = await fetch('/api/contact', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                        body: JSON.stringify(data)
-                });
-                if (response.ok) {
-                    formStatus.textContent = 'Message sent! Thank you.';
-                    form.reset();
-                } else {
-                    formStatus.textContent = 'An error occurred. Please try again.';
-                }
-            } catch (error) {
-                formStatus.textContent = 'Failed to reach the server.';
-                console.error(error);
-            }
         });
     })();
     </script>
