@@ -128,21 +128,23 @@
             transition: filter var(--transition-duration);
         }
 
-        .menu-wrapper {
+        .menu-cluster {
             position: relative;
             display: flex;
             align-items: center;
+            gap: 12px;
         }
 
         nav {
             position: absolute;
             top: calc(100% + 12px);
+            left: 0;
             right: 0;
             display: flex;
             flex-direction: column;
             align-items: stretch;
             gap: 0;
-            width: min(260px, calc(100vw - 40px));
+            width: 100%;
             padding: 8px 0;
             border-radius: 12px;
             background: rgba(0, 0, 0, 0.92);
@@ -307,7 +309,6 @@
         .header-controls {
             display: flex;
             align-items: center;
-            gap: 12px;
         }
 
         .language-switch {
@@ -1032,14 +1033,8 @@
                 height: calc(var(--nav-height) - 28px);
             }
 
-            .header-controls {
-                gap: 6px;
-                flex-wrap: nowrap;
-            }
-
-            .menu-wrapper {
-                width: auto;
-                justify-content: flex-start;
+            .menu-cluster {
+                gap: 8px;
             }
 
             .menu-toggle {
@@ -1095,8 +1090,14 @@
             <img class="logo" src="./tsl-logo.png" alt="The Social Linked" data-logo="true">
         </a>
         <div class="header-controls">
-            <div class="menu-wrapper">
+            <div class="menu-cluster">
                 <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-controls="primaryNav" aria-expanded="false" title="Open menu">MENU</button>
+                <button class="language-switch" id="languageSwitch" type="button" title="Toggle Language" data-language="en">
+                    <span>EN</span>
+                    <span>ID</span>
+                </button>
+                <!-- Theme switcher -->
+                <div class="theme-switch" id="themeSwitch" title="Toggle Theme"></div>
                 <nav id="primaryNav" aria-hidden="true">
                     <!-- Navigation links translated to English.  Removed testimonial link to match the official site. -->
                     <a href="#" data-link="home" class="active" data-i18n="nav.home">Home</a>
@@ -1108,12 +1109,6 @@
                     <a href="#" data-link="contact" data-i18n="nav.contact">Contact</a>
                 </nav>
             </div>
-            <button class="language-switch" id="languageSwitch" type="button" title="Toggle Language" data-language="en">
-                <span>EN</span>
-                <span>ID</span>
-            </button>
-            <!-- Theme switcher -->
-            <div class="theme-switch" id="themeSwitch" title="Toggle Theme"></div>
         </div>
     </header>
     <!-- Main content container with sections -->
