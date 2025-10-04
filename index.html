@@ -121,33 +121,39 @@
             transition: filter var(--transition-duration);
         }
 
+        .menu-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
         nav {
-            position: fixed;
-            top: var(--nav-height);
-            left: 12px;
-            right: 12px;
+            position: absolute;
+            top: calc(100% + 12px);
+            right: 0;
             display: flex;
             flex-direction: column;
             align-items: stretch;
             gap: 0;
-            padding: 12px 0;
-            border-radius: var(--border-radius);
+            width: min(260px, calc(100vw - 40px));
+            padding: 8px 0;
+            border-radius: 12px;
             background: rgba(0, 0, 0, 0.92);
             border: 1px solid rgba(212, 175, 55, 0.35);
-            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.45);
-            max-height: calc(100vh - var(--nav-height) - 24px);
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.45);
+            max-height: calc(100vh - var(--nav-height) - 40px);
             overflow-y: auto;
             opacity: 0;
             pointer-events: none;
-            transform: translateY(-12px);
+            transform: translateY(-8px);
             transition: opacity var(--transition-duration), transform var(--transition-duration);
-            z-index: 90;
+            z-index: 150;
         }
 
         body[data-theme="light"] nav {
             background: rgba(255, 255, 255, 0.94);
             border-color: rgba(180, 138, 24, 0.35);
-            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.12);
         }
 
         body.menu-open nav {
@@ -160,9 +166,10 @@
             color: inherit;
             text-decoration: none;
             font-weight: 600;
-            padding: 14px 18px;
+            padding: 12px 18px;
             transition: color var(--transition-duration), background var(--transition-duration);
             border-bottom: 1px solid rgba(212, 175, 55, 0.18);
+            font-size: 0.92rem;
         }
 
         nav a:last-child {
@@ -1005,6 +1012,27 @@
             #home .hero h1 { font-size: 2rem; }
             #home .hero h2 { font-size: 1rem; }
             #services .grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+            .menu-wrapper {
+                width: 100%;
+            }
+
+            nav {
+                position: fixed;
+                top: var(--nav-height);
+                left: 12px;
+                right: 12px;
+                width: auto;
+                max-width: none;
+                padding: 12px 0;
+                transform: translateY(-12px);
+            }
+        }
+
+        @media (min-width: 769px) and (hover: hover) {
+            body.menu-open {
+                overflow: visible;
+            }
         }
     </style>
 </head>
@@ -1014,18 +1042,20 @@
         <a href="#" data-link="home" class="logo-link">
             <img class="logo" src="./tsl-logo.png" alt="The Social Linked" data-logo="true">
         </a>
-        <nav id="primaryNav" aria-hidden="true">
-            <!-- Navigation links translated to English.  Removed testimonial link to match the official site. -->
-            <a href="#" data-link="home" class="active" data-i18n="nav.home">Home</a>
-            <a href="#" data-link="services" data-i18n="nav.services">Services</a>
-            <a href="#" data-link="partners" data-i18n="nav.partners">Partners</a>
-            <a href="#" data-link="articles" data-i18n="nav.articles">Articles</a>
-            <a href="#" data-link="faq" data-i18n="nav.faq">FAQ</a>
-            <a href="#" data-link="about" data-i18n="nav.about">About</a>
-            <a href="#" data-link="contact" data-i18n="nav.contact">Contact</a>
-        </nav>
         <div class="header-controls">
-            <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-controls="primaryNav" aria-expanded="false" title="Open menu">MENU</button>
+            <div class="menu-wrapper">
+                <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-controls="primaryNav" aria-expanded="false" title="Open menu">MENU</button>
+                <nav id="primaryNav" aria-hidden="true">
+                    <!-- Navigation links translated to English.  Removed testimonial link to match the official site. -->
+                    <a href="#" data-link="home" class="active" data-i18n="nav.home">Home</a>
+                    <a href="#" data-link="services" data-i18n="nav.services">Services</a>
+                    <a href="#" data-link="partners" data-i18n="nav.partners">Partners</a>
+                    <a href="#" data-link="articles" data-i18n="nav.articles">Articles</a>
+                    <a href="#" data-link="faq" data-i18n="nav.faq">FAQ</a>
+                    <a href="#" data-link="about" data-i18n="nav.about">About</a>
+                    <a href="#" data-link="contact" data-i18n="nav.contact">Contact</a>
+                </nav>
+            </div>
             <button class="language-switch" id="languageSwitch" type="button" title="Toggle Language" data-language="en">
                 <span>EN</span>
                 <span>ID</span>
@@ -1767,6 +1797,9 @@
         const menuToggle = document.getElementById('menuToggle');
         const primaryNav = document.getElementById('primaryNav');
         const body = document.body;
+        const hoverMedia = window.matchMedia('(hover: hover)');
+        let supportsHover = hoverMedia.matches;
+        let hoverCloseTimer = null;
 
         const translations = {
             en: {
@@ -1919,6 +1952,38 @@
             }
         };
 
+        function handleHoverChange(event) {
+            supportsHover = event.matches;
+            if (!supportsHover) {
+                setMenuState(false);
+            }
+        }
+
+        if (typeof hoverMedia.addEventListener === 'function') {
+            hoverMedia.addEventListener('change', handleHoverChange);
+        } else if (typeof hoverMedia.addListener === 'function') {
+            hoverMedia.addListener(handleHoverChange);
+        }
+
+        function clearHoverTimer() {
+            if (hoverCloseTimer) {
+                clearTimeout(hoverCloseTimer);
+                hoverCloseTimer = null;
+            }
+        }
+
+        function scheduleHoverClose() {
+            clearHoverTimer();
+            if (!supportsHover) {
+                closeMenu();
+                return;
+            }
+            hoverCloseTimer = setTimeout(() => {
+                hoverCloseTimer = null;
+                closeMenu();
+            }, 150);
+        }
+
         function setMenuState(open) {
             if (open) {
                 body.classList.add('menu-open');
@@ -1937,6 +2002,7 @@
         }
 
         function closeMenu() {
+            clearHoverTimer();
             setMenuState(false);
         }
 
@@ -2000,6 +2066,59 @@
         });
 
         setMenuState(false);
+
+        if (menuToggle && primaryNav) {
+            if (supportsHover) {
+                menuToggle.addEventListener('mouseenter', () => {
+                    clearHoverTimer();
+                    setMenuState(true);
+                });
+                primaryNav.addEventListener('mouseenter', () => {
+                    clearHoverTimer();
+                    setMenuState(true);
+                });
+                menuToggle.addEventListener('mouseleave', () => {
+                    if (body.classList.contains('menu-open')) {
+                        scheduleHoverClose();
+                    }
+                });
+                primaryNav.addEventListener('mouseleave', () => {
+                    if (body.classList.contains('menu-open')) {
+                        scheduleHoverClose();
+                    }
+                });
+            }
+
+            menuToggle.addEventListener('focus', () => {
+                clearHoverTimer();
+                setMenuState(true);
+            });
+
+            menuToggle.addEventListener('blur', (event) => {
+                if (!supportsHover) {
+                    return;
+                }
+                if (primaryNav.contains(event.relatedTarget)) {
+                    return;
+                }
+                scheduleHoverClose();
+            });
+
+            primaryNav.addEventListener('focusin', () => {
+                clearHoverTimer();
+                setMenuState(true);
+            });
+
+            primaryNav.addEventListener('focusout', (event) => {
+                if (!supportsHover) {
+                    return;
+                }
+                if (primaryNav.contains(event.relatedTarget)) {
+                    return;
+                }
+                scheduleHoverClose();
+            });
+        }
 
         if (menuToggle) {
             menuToggle.addEventListener('click', () => {
