@@ -181,7 +181,39 @@
             font-size: 0.92rem;
         }
 
-        nav a:last-child {
+        nav > .nav-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        nav .nav-submenu {
+            display: flex;
+            flex-direction: column;
+            background: rgba(5, 5, 5, 0.78);
+            border-top: 1px solid rgba(212, 175, 55, 0.15);
+        }
+
+        nav .nav-submenu a {
+            padding: 10px 18px 10px 34px;
+            font-size: 0.85rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.12);
+        }
+
+        body[data-theme="light"] nav .nav-submenu {
+            background: rgba(255, 255, 255, 0.86);
+            border-top-color: rgba(180, 138, 24, 0.18);
+        }
+
+        body[data-theme="light"] nav .nav-submenu a {
+            border-bottom-color: rgba(180, 138, 24, 0.16);
+        }
+
+        nav > a:last-of-type,
+        nav > .nav-group:last-of-type > .nav-parent {
+            border-bottom: none;
+        }
+
+        nav .nav-submenu a:last-of-type {
             border-bottom: none;
         }
 
@@ -203,6 +235,16 @@
         }
 
         body[data-theme="light"] nav a.active {
+            color: var(--light-accent);
+            background: rgba(180, 138, 24, 0.15);
+        }
+
+        .nav-parent.has-active-child {
+            color: var(--dark-accent);
+            background: rgba(212, 175, 55, 0.18);
+        }
+
+        body[data-theme="light"] .nav-parent.has-active-child {
             color: var(--light-accent);
             background: rgba(180, 138, 24, 0.15);
         }
@@ -1101,7 +1143,15 @@
                 <nav id="primaryNav" aria-hidden="true">
                     <!-- Navigation links translated to English.  Removed testimonial link to match the official site. -->
                     <a href="#" data-link="home" class="active" data-i18n="nav.home">Home</a>
-                    <a href="#" data-link="services" data-i18n="nav.services">Services</a>
+                    <div class="nav-group" data-nav-group="services">
+                        <a href="#" data-link="services" class="nav-parent" data-i18n="nav.services">Services</a>
+                        <div class="nav-submenu">
+                            <a href="#" data-link="digital" data-i18n="services.digital.title">Digital Marketing</a>
+                            <a href="#" data-link="visual" data-i18n="services.visual.title">Visual Design</a>
+                            <a href="#" data-link="social" data-i18n="services.social.title">Social Media Management</a>
+                            <a href="#" data-link="seo" data-i18n="services.seo.title">SEO / SEM</a>
+                        </div>
+                    </div>
                     <a href="#" data-link="partners" data-i18n="nav.partners">Partners</a>
                     <a href="#" data-link="articles" data-i18n="nav.articles">Articles</a>
                     <a href="#" data-link="faq" data-i18n="nav.faq">FAQ</a>
@@ -1847,6 +1897,7 @@
         const hoverMedia = window.matchMedia('(hover: hover)');
         let supportsHover = hoverMedia.matches;
         let hoverCloseTimer = null;
+        const navGroups = document.querySelectorAll('.nav-group');
 
         const translations = {
             en: {
@@ -2031,6 +2082,17 @@
             }, 150);
         }
 
+        function refreshNavGroupState() {
+            navGroups.forEach((group) => {
+                const parentLink = group.querySelector('.nav-parent');
+                if (!parentLink) {
+                    return;
+                }
+                const hasActiveChild = !!group.querySelector('.nav-submenu a.active');
+                parentLink.classList.toggle('has-active-child', hasActiveChild);
+            });
+        }
+
         function setMenuState(open) {
             if (open) {
                 body.classList.add('menu-open');
@@ -2099,6 +2161,7 @@
             navLinks.forEach((link) => {
                 link.classList.toggle('active', link.getAttribute('data-link') === id);
             });
+            refreshNavGroupState();
         }
 
         linkElements.forEach((el) => {
@@ -2113,6 +2176,7 @@
         });
 
         setMenuState(false);
+        refreshNavGroupState();
 
         if (menuToggle && primaryNav) {
             if (supportsHover) {
