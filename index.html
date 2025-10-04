@@ -162,6 +162,54 @@
             color: var(--light-accent);
         }
 
+        .menu-toggle {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 6px;
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            border: 1px solid var(--dark-accent);
+            background: transparent;
+            cursor: pointer;
+            transition: border-color var(--transition-duration), background var(--transition-duration);
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            border-radius: 999px;
+            background: var(--dark-accent);
+            transition: transform var(--transition-duration), opacity var(--transition-duration), background var(--transition-duration);
+        }
+
+        body[data-theme="light"] .menu-toggle {
+            border-color: var(--light-accent);
+        }
+
+        body[data-theme="light"] .menu-toggle span {
+            background: var(--light-accent);
+        }
+
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        body.menu-open .menu-toggle span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        body.menu-open .menu-toggle span:nth-child(2) {
+            opacity: 0;
+        }
+
+        body.menu-open .menu-toggle span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
         /* Theme toggle switch.  A simple circle that moves within a
          * rectangular track to indicate dark/light mode. */
         .theme-switch {
@@ -885,6 +933,84 @@
             text-decoration: underline;
         }
 
+        @media (max-width: 1024px) {
+            :root {
+                --nav-height: 72px;
+            }
+
+            header {
+                padding: 0 16px;
+            }
+
+            .logo {
+                width: 220px;
+                height: auto;
+            }
+
+            .header-controls {
+                gap: 10px;
+            }
+
+            .language-switch {
+                width: 82px;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            nav {
+                position: fixed;
+                top: var(--nav-height);
+                left: 12px;
+                right: 12px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                padding: 12px 0;
+                border-radius: var(--border-radius);
+                background: rgba(0, 0, 0, 0.92);
+                border: 1px solid rgba(212, 175, 55, 0.35);
+                box-shadow: 0 16px 32px rgba(0, 0, 0, 0.45);
+                max-height: calc(100vh - var(--nav-height) - 24px);
+                overflow-y: auto;
+                opacity: 0;
+                pointer-events: none;
+                transform: translateY(-12px);
+                transition: opacity var(--transition-duration), transform var(--transition-duration);
+            }
+
+            body[data-theme="light"] nav {
+                background: rgba(255, 255, 255, 0.94);
+                border-color: rgba(180, 138, 24, 0.35);
+                box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+            }
+
+            body.menu-open nav {
+                opacity: 1;
+                pointer-events: auto;
+                transform: translateY(0);
+            }
+
+            nav a {
+                padding: 14px 18px;
+                font-size: 0.95rem;
+                border-bottom: 1px solid rgba(212, 175, 55, 0.18);
+            }
+
+            nav a:last-child {
+                border-bottom: none;
+            }
+
+            body[data-theme="light"] nav a {
+                border-bottom-color: rgba(180, 138, 24, 0.2);
+            }
+
+            nav a::after {
+                display: none;
+            }
+        }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
             #home .hero h1 { font-size: 2rem; }
@@ -899,7 +1025,7 @@
         <a href="#" data-link="home" class="logo-link">
             <img class="logo" src="./tsl-logo.png" alt="The Social Linked" data-logo="true">
         </a>
-        <nav>
+        <nav id="primaryNav">
             <!-- Navigation links translated to English.  Removed testimonial link to match the official site. -->
             <a href="#" data-link="home" class="active" data-i18n="nav.home">Home</a>
             <a href="#" data-link="services" data-i18n="nav.services">Services</a>
@@ -909,6 +1035,11 @@
             <a href="#" data-link="about" data-i18n="nav.about">About</a>
             <a href="#" data-link="contact" data-i18n="nav.contact">Contact</a>
         </nav>
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation" aria-controls="primaryNav" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
         <div class="header-controls">
             <button class="language-switch" id="languageSwitch" type="button" title="Toggle Language" data-language="en">
                 <span>EN</span>
@@ -1648,7 +1779,10 @@
         const navLinks = document.querySelectorAll('nav a');
         const themeSwitch = document.getElementById('themeSwitch');
         const languageSwitch = document.getElementById('languageSwitch');
+        const menuToggle = document.getElementById('menuToggle');
+        const primaryNav = document.getElementById('primaryNav');
         const body = document.body;
+        const MOBILE_BREAKPOINT = 1024;
 
         const translations = {
             en: {
@@ -1801,6 +1935,32 @@
             }
         };
 
+        function isMobileViewport() {
+            return window.innerWidth <= MOBILE_BREAKPOINT;
+        }
+
+        function setMenuState(open) {
+            if (open) {
+                body.classList.add('menu-open');
+            } else {
+                body.classList.remove('menu-open');
+            }
+            if (menuToggle) {
+                menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            }
+            if (primaryNav) {
+                if (isMobileViewport()) {
+                    primaryNav.setAttribute('aria-hidden', open ? 'false' : 'true');
+                } else {
+                    primaryNav.removeAttribute('aria-hidden');
+                }
+            }
+        }
+
+        function closeMenu() {
+            setMenuState(false);
+        }
+
         let currentLanguage = 'en';
 
         function applyLanguage(lang) {
@@ -1854,7 +2014,33 @@
                 event.preventDefault();
                 const target = el.getAttribute('data-link');
                 showSection(target);
+                if (body.classList.contains('menu-open') && isMobileViewport()) {
+                    closeMenu();
+                }
             });
+        });
+
+        setMenuState(false);
+
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                const open = !body.classList.contains('menu-open');
+                setMenuState(open);
+            });
+        }
+
+        window.addEventListener('resize', () => {
+            if (!isMobileViewport()) {
+                setMenuState(false);
+            } else if (!body.classList.contains('menu-open')) {
+                setMenuState(false);
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && body.classList.contains('menu-open')) {
+                closeMenu();
+            }
         });
 
         if (themeSwitch) {
