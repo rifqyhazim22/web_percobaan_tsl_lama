@@ -112,9 +112,16 @@
             background-color: rgba(255, 255, 255, 0.9);
         }
 
+        .logo-link {
+            display: flex;
+            align-items: center;
+            max-width: min(260px, 32vw);
+        }
+
         .logo {
-            height: calc(var(--nav-height) - 20px);
-            width: 320px;
+            height: calc(var(--nav-height) - 24px);
+            width: auto;
+            max-width: 100%;
             object-fit: contain;
             object-position: left center;
             filter: none;
@@ -1014,27 +1021,31 @@
             #services .grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
 
             header {
-                padding: 0 14px;
+                padding: 0 12px;
+            }
+
+            .logo-link {
+                max-width: 160px;
             }
 
             .logo {
-                width: 180px;
-                height: auto;
+                height: calc(var(--nav-height) - 28px);
             }
 
             .header-controls {
-                gap: 8px;
+                gap: 6px;
+                flex-wrap: nowrap;
             }
 
             .menu-wrapper {
-                width: 100%;
-                justify-content: flex-end;
+                width: auto;
+                justify-content: flex-start;
             }
 
             .menu-toggle {
-                padding: 8px 14px;
-                font-size: 0.82rem;
-                letter-spacing: 0.12em;
+                padding: 7px 12px;
+                font-size: 0.78rem;
+                letter-spacing: 0.1em;
             }
 
             nav {
@@ -1044,19 +1055,29 @@
                 right: 12px;
                 width: auto;
                 max-width: none;
-                padding: 16px 0;
-                border-radius: 16px;
-                transform: translateY(-16px);
-                box-shadow: 0 26px 42px rgba(0, 0, 0, 0.6);
+                padding: 14px 0;
+                border-radius: 14px;
+                transform: translateY(-14px);
+                box-shadow: 0 22px 36px rgba(0, 0, 0, 0.55);
             }
 
             body[data-theme="light"] nav {
-                box-shadow: 0 26px 42px rgba(0, 0, 0, 0.18);
+                box-shadow: 0 22px 36px rgba(0, 0, 0, 0.16);
             }
 
             nav a {
-                padding: 16px 22px;
-                font-size: 1rem;
+                padding: 14px 20px;
+                font-size: 0.95rem;
+            }
+
+            .language-switch {
+                width: 76px;
+                padding: 3px 10px;
+            }
+
+            .theme-switch {
+                width: 44px;
+                height: 22px;
             }
         }
 
