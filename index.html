@@ -122,92 +122,136 @@
         }
 
         nav {
+            position: fixed;
+            top: var(--nav-height);
+            left: 12px;
+            right: 12px;
             display: flex;
-            gap: 24px;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0;
+            padding: 12px 0;
+            border-radius: var(--border-radius);
+            background: rgba(0, 0, 0, 0.92);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.45);
+            max-height: calc(100vh - var(--nav-height) - 24px);
+            overflow-y: auto;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-12px);
+            transition: opacity var(--transition-duration), transform var(--transition-duration);
+            z-index: 90;
+        }
+
+        body[data-theme="light"] nav {
+            background: rgba(255, 255, 255, 0.94);
+            border-color: rgba(180, 138, 24, 0.35);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        body.menu-open nav {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
         }
 
         nav a {
             color: inherit;
             text-decoration: none;
             font-weight: 600;
-            position: relative;
-            padding: 6px;
-            transition: color var(--transition-duration);
+            padding: 14px 18px;
+            transition: color var(--transition-duration), background var(--transition-duration);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.18);
         }
 
-        nav a::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: -3px;
-            width: 0;
-            height: 2px;
-            background: var(--dark-accent);
-            transition: width 0.3s;
+        nav a:last-child {
+            border-bottom: none;
         }
 
-        body[data-theme="light"] nav a::after {
-            background: var(--light-accent);
+        body[data-theme="light"] nav a {
+            border-bottom-color: rgba(180, 138, 24, 0.2);
         }
 
-        nav a:hover::after, nav a.active::after {
-            width: 100%;
+        nav a:hover {
+            background: rgba(212, 175, 55, 0.12);
+        }
+
+        body[data-theme="light"] nav a:hover {
+            background: rgba(180, 138, 24, 0.1);
         }
 
         nav a.active {
             color: var(--dark-accent);
+            background: rgba(212, 175, 55, 0.18);
         }
 
         body[data-theme="light"] nav a.active {
             color: var(--light-accent);
+            background: rgba(180, 138, 24, 0.15);
         }
 
         .menu-toggle {
-            display: none;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
-            gap: 6px;
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
+            padding: 10px 18px;
+            border-radius: 999px;
             border: 1px solid var(--dark-accent);
             background: transparent;
+            color: var(--dark-accent);
             cursor: pointer;
-            transition: border-color var(--transition-duration), background var(--transition-duration);
-        }
-
-        .menu-toggle span {
-            display: block;
-            width: 22px;
-            height: 2px;
-            border-radius: 999px;
-            background: var(--dark-accent);
-            transition: transform var(--transition-duration), opacity var(--transition-duration), background var(--transition-duration);
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            transition: color var(--transition-duration), background var(--transition-duration), border-color var(--transition-duration);
         }
 
         body[data-theme="light"] .menu-toggle {
             border-color: var(--light-accent);
+            color: var(--light-accent);
         }
 
-        body[data-theme="light"] .menu-toggle span {
-            background: var(--light-accent);
+        .menu-toggle:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.35);
+        }
+
+        body[data-theme="light"] .menu-toggle:focus-visible {
+            box-shadow: 0 0 0 3px rgba(180, 138, 24, 0.35);
+        }
+
+        .menu-toggle:hover {
+            background: rgba(212, 175, 55, 0.12);
+        }
+
+        body[data-theme="light"] .menu-toggle:hover {
+            background: rgba(180, 138, 24, 0.12);
         }
 
         body.menu-open {
             overflow: hidden;
         }
 
-        body.menu-open .menu-toggle span:nth-child(1) {
-            transform: translateY(8px) rotate(45deg);
+        body.menu-open .menu-toggle {
+            background: var(--dark-accent);
+            color: var(--dark-bg);
         }
 
-        body.menu-open .menu-toggle span:nth-child(2) {
-            opacity: 0;
+        body[data-theme="light"].menu-open .menu-toggle {
+            background: var(--light-accent);
+            color: var(--light-bg);
         }
 
-        body.menu-open .menu-toggle span:nth-child(3) {
-            transform: translateY(-8px) rotate(-45deg);
+        body.menu-open .menu-toggle:hover {
+            background: var(--dark-accent);
+            color: var(--dark-bg);
+        }
+
+        body[data-theme="light"].menu-open .menu-toggle:hover {
+            background: var(--light-accent);
+            color: var(--light-bg);
         }
 
         /* Theme toggle switch.  A simple circle that moves within a
@@ -954,61 +998,6 @@
             .language-switch {
                 width: 82px;
             }
-
-            .menu-toggle {
-                display: flex;
-            }
-
-            nav {
-                position: fixed;
-                top: var(--nav-height);
-                left: 12px;
-                right: 12px;
-                flex-direction: column;
-                align-items: stretch;
-                gap: 0;
-                padding: 12px 0;
-                border-radius: var(--border-radius);
-                background: rgba(0, 0, 0, 0.92);
-                border: 1px solid rgba(212, 175, 55, 0.35);
-                box-shadow: 0 16px 32px rgba(0, 0, 0, 0.45);
-                max-height: calc(100vh - var(--nav-height) - 24px);
-                overflow-y: auto;
-                opacity: 0;
-                pointer-events: none;
-                transform: translateY(-12px);
-                transition: opacity var(--transition-duration), transform var(--transition-duration);
-            }
-
-            body[data-theme="light"] nav {
-                background: rgba(255, 255, 255, 0.94);
-                border-color: rgba(180, 138, 24, 0.35);
-                box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
-            }
-
-            body.menu-open nav {
-                opacity: 1;
-                pointer-events: auto;
-                transform: translateY(0);
-            }
-
-            nav a {
-                padding: 14px 18px;
-                font-size: 0.95rem;
-                border-bottom: 1px solid rgba(212, 175, 55, 0.18);
-            }
-
-            nav a:last-child {
-                border-bottom: none;
-            }
-
-            body[data-theme="light"] nav a {
-                border-bottom-color: rgba(180, 138, 24, 0.2);
-            }
-
-            nav a::after {
-                display: none;
-            }
         }
 
         /* Responsive adjustments */
@@ -1025,7 +1014,7 @@
         <a href="#" data-link="home" class="logo-link">
             <img class="logo" src="./tsl-logo.png" alt="The Social Linked" data-logo="true">
         </a>
-        <nav id="primaryNav">
+        <nav id="primaryNav" aria-hidden="true">
             <!-- Navigation links translated to English.  Removed testimonial link to match the official site. -->
             <a href="#" data-link="home" class="active" data-i18n="nav.home">Home</a>
             <a href="#" data-link="services" data-i18n="nav.services">Services</a>
@@ -1035,12 +1024,8 @@
             <a href="#" data-link="about" data-i18n="nav.about">About</a>
             <a href="#" data-link="contact" data-i18n="nav.contact">Contact</a>
         </nav>
-        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation" aria-controls="primaryNav" aria-expanded="false">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
         <div class="header-controls">
+            <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation" aria-controls="primaryNav" aria-expanded="false">MENU</button>
             <button class="language-switch" id="languageSwitch" type="button" title="Toggle Language" data-language="en">
                 <span>EN</span>
                 <span>ID</span>
@@ -1782,7 +1767,6 @@
         const menuToggle = document.getElementById('menuToggle');
         const primaryNav = document.getElementById('primaryNav');
         const body = document.body;
-        const MOBILE_BREAKPOINT = 1024;
 
         const translations = {
             en: {
@@ -1935,10 +1919,6 @@
             }
         };
 
-        function isMobileViewport() {
-            return window.innerWidth <= MOBILE_BREAKPOINT;
-        }
-
         function setMenuState(open) {
             if (open) {
                 body.classList.add('menu-open');
@@ -1947,13 +1927,12 @@
             }
             if (menuToggle) {
                 menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+                const label = open ? 'Close menu' : 'Open menu';
+                menuToggle.setAttribute('aria-label', label);
+                menuToggle.title = label;
             }
             if (primaryNav) {
-                if (isMobileViewport()) {
-                    primaryNav.setAttribute('aria-hidden', open ? 'false' : 'true');
-                } else {
-                    primaryNav.removeAttribute('aria-hidden');
-                }
+                primaryNav.setAttribute('aria-hidden', open ? 'false' : 'true');
             }
         }
 
@@ -2014,7 +1993,7 @@
                 event.preventDefault();
                 const target = el.getAttribute('data-link');
                 showSection(target);
-                if (body.classList.contains('menu-open') && isMobileViewport()) {
+                if (body.classList.contains('menu-open')) {
                     closeMenu();
                 }
             });
@@ -2030,11 +2009,7 @@
         }
 
         window.addEventListener('resize', () => {
-            if (!isMobileViewport()) {
-                setMenuState(false);
-            } else if (!body.classList.contains('menu-open')) {
-                setMenuState(false);
-            }
+            setMenuState(false);
         });
 
         document.addEventListener('keydown', (event) => {
