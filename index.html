@@ -141,7 +141,7 @@
             background: rgba(0, 0, 0, 0.92);
             border: 1px solid rgba(212, 175, 55, 0.35);
             box-shadow: 0 20px 35px rgba(0, 0, 0, 0.45);
-            max-height: calc(100vh - var(--nav-height) - 40px);
+            max-height: calc(100vh - var(--nav-height) - 24px);
             overflow-y: auto;
             opacity: 0;
             pointer-events: none;
@@ -1013,8 +1013,28 @@
             #home .hero h2 { font-size: 1rem; }
             #services .grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
 
+            header {
+                padding: 0 14px;
+            }
+
+            .logo {
+                width: 180px;
+                height: auto;
+            }
+
+            .header-controls {
+                gap: 8px;
+            }
+
             .menu-wrapper {
                 width: 100%;
+                justify-content: flex-end;
+            }
+
+            .menu-toggle {
+                padding: 8px 14px;
+                font-size: 0.82rem;
+                letter-spacing: 0.12em;
             }
 
             nav {
@@ -1024,8 +1044,19 @@
                 right: 12px;
                 width: auto;
                 max-width: none;
-                padding: 12px 0;
-                transform: translateY(-12px);
+                padding: 16px 0;
+                border-radius: 16px;
+                transform: translateY(-16px);
+                box-shadow: 0 26px 42px rgba(0, 0, 0, 0.6);
+            }
+
+            body[data-theme="light"] nav {
+                box-shadow: 0 26px 42px rgba(0, 0, 0, 0.18);
+            }
+
+            nav a {
+                padding: 16px 22px;
+                font-size: 1rem;
             }
         }
 
