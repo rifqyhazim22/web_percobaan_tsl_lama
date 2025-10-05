@@ -38,7 +38,7 @@
          *  Global Styles and Theme Definition
          *
          *  We define CSS variables for dark and light themes up front, and
-         *  reference them throughout the style declarations.  The body
+        *  reference them throughout the style declarations.  The body
          *  element’s data‑theme attribute toggles between these themes.
          */
         :root {
@@ -86,7 +86,7 @@
         }
 
         /*
-         * Navigation bar.  Contains the logo on the left and menu items
+        * Navigation bar.  Contains the logo on the left and menu items
          * aligned to the right.  Uses flexbox for alignment.  The bar
          * remains fixed at the top of the viewport.
          */
@@ -252,6 +252,18 @@
             border-bottom-color: var(--light-accent);
         }
 
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
         body[data-theme="light"] nav a {
             border-bottom-color: rgba(180, 138, 24, 0.2);
         }
@@ -350,85 +362,31 @@
         /* Theme toggle switch.  A simple circle that moves within a
          * rectangular track to indicate dark/light mode. */
         .theme-switch {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 7px 16px;
+            justify-content: center;
+            width: 54px;
+            height: 34px;
             border-radius: 999px;
             border: 1px solid var(--dark-accent);
             background: rgba(212, 175, 55, 0.12);
             color: var(--dark-accent);
             cursor: pointer;
-            font-weight: 600;
-            font-size: 0.78rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
             transition: border-color var(--transition-duration), background var(--transition-duration), color var(--transition-duration), box-shadow var(--transition-duration);
         }
 
-        .theme-switch .theme-option {
+        .theme-switch .emoji-indicator {
+            font-size: 1.1rem;
+            line-height: 1;
             display: inline-flex;
             align-items: center;
-            gap: 4px;
-            padding: 2px 8px;
-            border-radius: 8px;
-            background: rgba(212, 175, 55, 0.24);
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--dark-bg);
-            transition: background var(--transition-duration), color var(--transition-duration), opacity var(--transition-duration);
-        }
-
-        .theme-switch .theme-option .emoji {
-            font-size: 1rem;
-            line-height: 1;
-        }
-
-        .theme-switch .theme-option:last-child {
-            background: transparent;
-            color: inherit;
-            opacity: 0.7;
-        }
-
-        .theme-switch.active .theme-option:first-child {
-            background: transparent;
-            color: inherit;
-            opacity: 0.7;
-        }
-
-        .theme-switch.active .theme-option:last-child {
-            background: rgba(212, 175, 55, 0.32);
-            color: var(--dark-bg);
-            opacity: 1;
+            justify-content: center;
         }
 
         body[data-theme="light"] .theme-switch {
             border-color: var(--light-accent);
             background: rgba(180, 138, 24, 0.12);
             color: var(--light-accent);
-        }
-
-        body[data-theme="light"] .theme-switch .theme-option {
-            background: rgba(180, 138, 24, 0.22);
-            color: var(--light-bg);
-        }
-
-        body[data-theme="light"] .theme-switch .theme-option:last-child {
-            background: transparent;
-            color: var(--light-accent);
-            opacity: 0.7;
-        }
-
-        body[data-theme="light"] .theme-switch.active .theme-option:last-child {
-            background: rgba(180, 138, 24, 0.28);
-            color: var(--light-bg);
-            opacity: 1;
-        }
-
-        body[data-theme="light"] .theme-switch.active .theme-option:first-child {
-            background: transparent;
-            color: var(--light-accent);
-            opacity: 0.7;
         }
 
         .theme-switch:focus-visible {
@@ -1210,15 +1168,9 @@
                     <span>ID</span>
                 </button>
                 <!-- Theme switcher -->
-                <div class="theme-switch" id="themeSwitch" title="Toggle Theme" role="button" tabindex="0" aria-pressed="false">
-                    <span class="theme-option" data-theme-option="dark">
-                        <span class="emoji" aria-hidden="true">🌙</span>
-                        <span class="label" data-i18n="theme.dark">Night</span>
-                    </span>
-                    <span class="theme-option" data-theme-option="light">
-                        <span class="emoji" aria-hidden="true">☀️</span>
-                        <span class="label" data-i18n="theme.light">Day</span>
-                    </span>
+                <div class="theme-switch" id="themeSwitch" title="Toggle Theme" role="button" tabindex="0" aria-pressed="false" aria-live="polite">
+                    <span class="emoji-indicator" aria-hidden="true">🌙</span>
+                    <span class="sr-only" data-i18n="theme.toggle">Toggle theme</span>
                 </div>
                 <nav id="primaryNav" aria-hidden="true">
                     <!-- Navigation links translated to English.  Removed testimonial link to match the official site. -->
@@ -1978,6 +1930,7 @@
         let supportsHover = hoverMedia.matches;
         let hoverCloseTimer = null;
         const navGroups = document.querySelectorAll('.nav-group');
+        const themeEmojis = { dark: '🌙', light: '☀️' };
 
         const translations = {
             en: {
@@ -1991,8 +1944,11 @@
             'hero.title': 'ELEVATE YOUR BUSINESS',
             'hero.subtitle': 'We Provide 360° Integrated Marketing Services',
             'hero.cta': 'Contact Us',
+            'theme.toggle': 'Toggle theme',
             'theme.dark': 'Night',
             'theme.light': 'Day',
+            'theme.switchToLight': 'Switch to Day Mode',
+            'theme.switchToDark': 'Switch to Night Mode',
             'services.heading': 'Our Services',
             'services.description': 'TSL offers a variety of services to help your business grow. Click a card to learn more about each service.',
             'services.digital.title': 'Digital Marketing',
@@ -2067,8 +2023,11 @@
             'hero.title': 'TINGKATKAN BISNIS ANDA',
             'hero.subtitle': 'Kami Menyediakan Layanan Pemasaran Terintegrasi 360°',
             'hero.cta': 'Hubungi Kami',
+            'theme.toggle': 'Ganti tema',
             'theme.dark': 'Malam',
             'theme.light': 'Siang',
+            'theme.switchToLight': 'Ganti ke Mode Siang',
+            'theme.switchToDark': 'Ganti ke Mode Malam',
             'services.heading': 'Layanan Kami',
             'services.description': 'TSL menawarkan beragam layanan untuk membantu bisnis Anda berkembang. Klik setiap kartu untuk mengetahui detailnya.',
             'services.digital.title': 'Pemasaran Digital',
@@ -2244,6 +2203,7 @@
                     el.innerHTML = value;
                 }
             });
+            updateThemeSwitchUI();
         }
 
         function setLanguage(lang) {
@@ -2427,6 +2387,16 @@
             const isLight = currentTheme === 'light';
             themeSwitch.classList.toggle('active', isLight);
             themeSwitch.setAttribute('aria-pressed', isLight ? 'true' : 'false');
+            const dict = translations[currentLanguage] || translations.en;
+            const emojiEl = themeSwitch.querySelector('.emoji-indicator');
+            if (emojiEl) {
+                emojiEl.textContent = themeEmojis[currentTheme];
+            }
+            const labelKey = currentTheme === 'dark' ? 'theme.switchToLight' : 'theme.switchToDark';
+            const ariaLabel = dict[labelKey] ?? translations.en[labelKey];
+            if (ariaLabel) {
+                themeSwitch.setAttribute('aria-label', ariaLabel);
+            }
         }
 
         if (themeSwitch) {
