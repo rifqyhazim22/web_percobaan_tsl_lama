@@ -350,37 +350,78 @@
         /* Theme toggle switch.  A simple circle that moves within a
          * rectangular track to indicate dark/light mode. */
         .theme-switch {
-            position: relative;
-            width: 50px;
-            height: 24px;
-            border-radius: 12px;
-            cursor: pointer;
-            border: 1px solid var(--dark-accent);
             display: flex;
             align-items: center;
-            padding: 3px;
-            transition: background-color var(--transition-duration);
+            gap: 8px;
+            padding: 7px 16px;
+            border-radius: 999px;
+            border: 1px solid var(--dark-accent);
+            background: rgba(212, 175, 55, 0.12);
+            color: var(--dark-accent);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            transition: border-color var(--transition-duration), background var(--transition-duration), color var(--transition-duration), box-shadow var(--transition-duration);
+        }
+
+        .theme-switch span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 26px;
+            padding: 2px 6px;
+            border-radius: 8px;
+            background: rgba(212, 175, 55, 0.2);
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--dark-bg);
+        }
+
+        .theme-switch span:last-child {
+            background: transparent;
+            color: inherit;
+            opacity: 0.7;
         }
 
         body[data-theme="light"] .theme-switch {
             border-color: var(--light-accent);
+            background: rgba(180, 138, 24, 0.12);
+            color: var(--light-accent);
         }
 
-        .theme-switch::after {
-            content: '';
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--dark-accent);
-            transition: transform var(--transition-duration);
+        body[data-theme="light"] .theme-switch span {
+            background: rgba(180, 138, 24, 0.18);
+            color: var(--light-bg);
         }
 
-        body[data-theme="light"] .theme-switch::after {
-            background: var(--light-accent);
+        body[data-theme="light"] .theme-switch span:last-child {
+            background: transparent;
+            color: var(--light-accent);
         }
 
-        body[data-theme="light"] .theme-switch.active::after {
-            transform: translateX(26px);
+        body[data-theme="light"] .theme-switch.active span:first-child,
+        .theme-switch.active span:first-child {
+            opacity: 0.7;
+            background: transparent;
+            color: inherit;
+        }
+
+        body[data-theme="light"] .theme-switch.active span:last-child,
+        .theme-switch.active span:last-child {
+            opacity: 1;
+            background: rgba(212, 175, 55, 0.32);
+            color: var(--dark-bg);
+        }
+
+        .theme-switch:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.35);
+        }
+
+        body[data-theme="light"] .theme-switch:focus-visible {
+            box-shadow: 0 0 0 3px rgba(180, 138, 24, 0.35);
         }
 
         .header-controls {
