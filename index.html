@@ -366,23 +366,40 @@
             transition: border-color var(--transition-duration), background var(--transition-duration), color var(--transition-duration), box-shadow var(--transition-duration);
         }
 
-        .theme-switch span {
+        .theme-switch .theme-option {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            min-width: 26px;
-            padding: 2px 6px;
+            gap: 4px;
+            padding: 2px 8px;
             border-radius: 8px;
-            background: rgba(212, 175, 55, 0.2);
+            background: rgba(212, 175, 55, 0.24);
             font-size: 0.8rem;
             font-weight: 700;
             color: var(--dark-bg);
+            transition: background var(--transition-duration), color var(--transition-duration), opacity var(--transition-duration);
         }
 
-        .theme-switch span:last-child {
+        .theme-switch .theme-option .emoji {
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        .theme-switch .theme-option:last-child {
             background: transparent;
             color: inherit;
             opacity: 0.7;
+        }
+
+        .theme-switch.active .theme-option:first-child {
+            background: transparent;
+            color: inherit;
+            opacity: 0.7;
+        }
+
+        .theme-switch.active .theme-option:last-child {
+            background: rgba(212, 175, 55, 0.32);
+            color: var(--dark-bg);
+            opacity: 1;
         }
 
         body[data-theme="light"] .theme-switch {
@@ -391,28 +408,27 @@
             color: var(--light-accent);
         }
 
-        body[data-theme="light"] .theme-switch span {
-            background: rgba(180, 138, 24, 0.18);
+        body[data-theme="light"] .theme-switch .theme-option {
+            background: rgba(180, 138, 24, 0.22);
             color: var(--light-bg);
         }
 
-        body[data-theme="light"] .theme-switch span:last-child {
+        body[data-theme="light"] .theme-switch .theme-option:last-child {
             background: transparent;
             color: var(--light-accent);
-        }
-
-        body[data-theme="light"] .theme-switch.active span:first-child,
-        .theme-switch.active span:first-child {
             opacity: 0.7;
-            background: transparent;
-            color: inherit;
         }
 
-        body[data-theme="light"] .theme-switch.active span:last-child,
-        .theme-switch.active span:last-child {
+        body[data-theme="light"] .theme-switch.active .theme-option:last-child {
+            background: rgba(180, 138, 24, 0.28);
+            color: var(--light-bg);
             opacity: 1;
-            background: rgba(212, 175, 55, 0.32);
-            color: var(--dark-bg);
+        }
+
+        body[data-theme="light"] .theme-switch.active .theme-option:first-child {
+            background: transparent;
+            color: var(--light-accent);
+            opacity: 0.7;
         }
 
         .theme-switch:focus-visible {
@@ -1194,7 +1210,16 @@
                     <span>ID</span>
                 </button>
                 <!-- Theme switcher -->
-                <div class="theme-switch" id="themeSwitch" title="Toggle Theme"></div>
+                <div class="theme-switch" id="themeSwitch" title="Toggle Theme" role="button" tabindex="0" aria-pressed="false">
+                    <span class="theme-option" data-theme-option="dark">
+                        <span class="emoji" aria-hidden="true">🌙</span>
+                        <span class="label" data-i18n="theme.dark">Night</span>
+                    </span>
+                    <span class="theme-option" data-theme-option="light">
+                        <span class="emoji" aria-hidden="true">☀️</span>
+                        <span class="label" data-i18n="theme.light">Day</span>
+                    </span>
+                </div>
                 <nav id="primaryNav" aria-hidden="true">
                     <!-- Navigation links translated to English.  Removed testimonial link to match the official site. -->
                     <a href="#" data-link="home" class="active" data-i18n="nav.home">Home</a>
@@ -1966,6 +1991,8 @@
             'hero.title': 'ELEVATE YOUR BUSINESS',
             'hero.subtitle': 'We Provide 360° Integrated Marketing Services',
             'hero.cta': 'Contact Us',
+            'theme.dark': 'Night',
+            'theme.light': 'Day',
             'services.heading': 'Our Services',
             'services.description': 'TSL offers a variety of services to help your business grow. Click a card to learn more about each service.',
             'services.digital.title': 'Digital Marketing',
@@ -2040,6 +2067,8 @@
             'hero.title': 'TINGKATKAN BISNIS ANDA',
             'hero.subtitle': 'Kami Menyediakan Layanan Pemasaran Terintegrasi 360°',
             'hero.cta': 'Hubungi Kami',
+            'theme.dark': 'Malam',
+            'theme.light': 'Siang',
             'services.heading': 'Layanan Kami',
             'services.description': 'TSL menawarkan beragam layanan untuk membantu bisnis Anda berkembang. Klik setiap kartu untuk mengetahui detailnya.',
             'services.digital.title': 'Pemasaran Digital',
@@ -2383,14 +2412,36 @@
             }
         });
 
+        let currentTheme = body.getAttribute('data-theme') || 'dark';
+
+        function applyTheme(nextTheme) {
+            currentTheme = nextTheme;
+            body.setAttribute('data-theme', nextTheme);
+            updateThemeSwitchUI();
+        }
+
+        function updateThemeSwitchUI() {
+            if (!themeSwitch) {
+                return;
+            }
+            const isLight = currentTheme === 'light';
+            themeSwitch.classList.toggle('active', isLight);
+            themeSwitch.setAttribute('aria-pressed', isLight ? 'true' : 'false');
+        }
+
         if (themeSwitch) {
             themeSwitch.addEventListener('click', () => {
-                const current = body.getAttribute('data-theme') || 'dark';
-                const next = current === 'dark' ? 'light' : 'dark';
-                body.setAttribute('data-theme', next);
-                themeSwitch.classList.toggle('active', next === 'light');
+                const next = currentTheme === 'dark' ? 'light' : 'dark';
+                applyTheme(next);
             });
-            themeSwitch.classList.toggle('active', body.getAttribute('data-theme') === 'light');
+            themeSwitch.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    const next = currentTheme === 'dark' ? 'light' : 'dark';
+                    applyTheme(next);
+                }
+            });
+            updateThemeSwitchUI();
         }
 
         if (languageSwitch) {
